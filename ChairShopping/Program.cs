@@ -16,6 +16,10 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>().
 #endregion
 
 #region section of security
+
+
+
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
     options =>
