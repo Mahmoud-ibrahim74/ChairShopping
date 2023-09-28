@@ -1,4 +1,6 @@
 using ChairShopping.Data;
+using ChairShopping.Interfaces;
+using ChairShopping.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +35,10 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider);
 
+#endregion
+
+#region Interfaces and repo 
+builder.Services.AddScoped<IAdmin, Admin>();
 #endregion
 var app = builder.Build();
 
