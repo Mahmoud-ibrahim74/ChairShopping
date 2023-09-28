@@ -1,9 +1,10 @@
 ﻿using ChairShopping.Data;
+using ChairShopping.Interfaces;
 using ChairShopping.ViewModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
-using NuGet.Protocol.Plugins;
 
 namespace ChairShopping.Controllers
 {
@@ -67,20 +68,63 @@ namespace ChairShopping.Controllers
                    var result = await _userManager.CreateAsync(NewUser,register.Password);
                     if (result.Succeeded)
                     {
-                        ViewData["UserAdded"] = "User Added Sucessfully";
-                        return RedirectToAction("Index", "Home");                        
+                        ViewBag.UserAdded = "User Added Sucessfully";
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Cannot Login Please try Again");
+                        foreach (var err in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, err.Description); // handle errors
+                        }
                     }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User Already Exist !!");
                 }
             }
             // If we reach this point, something went wrong, so redisplay the login form
             return View(register);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            return RedirectToAction("Login", "Account");
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPassword)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(forgetPassword.Email);
+                if (user != null )
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var callbackUrl = Url.Action("ResetPassword", "Account",
+                        new { userId = user.Id, token = token }, Request.Scheme);
+
+                    // Send the password reset link to the user's email
+                    // You can use any email sending mechanism here
+                    IEmailSender _emailSender = new GmailEmailSender();
+                    await _emailSender.SendEmailAsync(forgetPassword.Email, "Reset Password",
+                        $"Please reset your password by clicking <a href='{callbackUrl}'>here</a>.");
+
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Email doesn't  Exist !!");
+                }
 
 
+            }
 
+            // If we got this far, something failed, redisplay the form
+            return View(forgetPassword);
+        }
     }
 }
