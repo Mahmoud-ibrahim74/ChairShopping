@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChairShopping.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +9,10 @@ namespace ChairShopping.Data
     {
         
         public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
-        {
-                
+        {               
         }
+        public DbSet<Category> categories { get; set; }
+        public DbSet<Product> products { get; set; }
+        public DbSet<Order> orders { get; set; }
     }
 }
