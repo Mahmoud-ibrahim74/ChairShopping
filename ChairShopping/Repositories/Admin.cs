@@ -245,11 +245,15 @@ namespace ChairShopping.Repositories
                 return null;
             }
             var category = await _db.categories.FirstOrDefaultAsync(x => x.CategoryName == model.CategoryName);
-            if (category == null)
+            if (category != null)
             {
                 return null;
             }
-            await _db.categories.AddAsync(category);
+            var newCat = new Category
+            {
+                CategoryName = model.CategoryName
+            };
+            await _db.categories.AddAsync(newCat);
             await _db.SaveChangesAsync();
             return category;
         }
