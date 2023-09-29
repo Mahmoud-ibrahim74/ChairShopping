@@ -3,24 +3,70 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+<style>
+	.dropbtn {
+		background-color: #04AA6D;
+		color: white;
+		padding: 16px;
+		font-size: 16px;
+		border: none;
+	}
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-     
-        <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" style="color:cornflowerblue" type="submit" class="nav-link btn btn-link text-blue border-0">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a id="login" asp-action="Login" asp-controller="Account">Login</a>
-        </li>
-        <li class="nav-item">
-        </li>
+	.dropdown {
+		position: relative;
+		display: inline-block;
+	}
 
-    }
-</ul>
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		background-color: #f1f1f1;
+		min-width: 200px;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		z-index: 1;
+	}
+
+		.dropdown-content a {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+		}
+
+			.dropdown-content a:hover {
+				background-color: #ddd;
+			}
+
+	.dropdown:hover .dropdown-content {
+		display: block;
+	}
+
+	.dropdown:hover .dropbtn {
+		background-color: #3e8e41;
+	}
+</style>
+@if (SignInManager.IsSignedIn(User))
+{
+
+	<div class="dropdown">
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@User.Identity.Name  <i class="fa fa-user"></i></button>
+		<div class="dropdown-content">
+			<form id="logoutForm" class="form-inline" asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+				<button id="logout" style="color:cornflowerblue" type="submit" class="nav-link btn btn-link text-blue border-0">Logout</button>
+			</form>			
+		</div>
+	</div>
+}
+else
+{
+	<div class="dropdown">
+		<button class="dropbtn"><i class="fa fa-home"></i></button>
+		<div class="dropdown-content">
+			<a id="login" asp-action="Login" asp-controller="Account">Login</a>
+
+			<a href="#">Manage Account </a>
+		</div>
+	</div>
+}
+
+

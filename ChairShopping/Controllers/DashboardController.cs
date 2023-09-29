@@ -1,11 +1,13 @@
 ﻿using ChairShopping.Data;
 using ChairShopping.Interfaces;
 using ChairShopping.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChairShopping.Controllers
 {
-	public class DashboardController : Controller
+    [Authorize(Roles = "Admin")]
+    public class DashboardController : Controller
 	{
         private readonly IAdmin _repo;
 
@@ -84,5 +86,6 @@ namespace ChairShopping.Controllers
             }
             return View();
         }
-    }
+	
+	}
 }

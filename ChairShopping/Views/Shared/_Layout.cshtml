@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using ChairShopping.Data;
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -16,6 +23,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ChairShopping.styles.css" asp-append-version="true" />
+
 </head>
 <body>
 	<!-- Start Header/Navigation -->
@@ -38,15 +46,20 @@
 					<li><a class="nav-link" href="services.html">Services</a></li>
 					<li><a class="nav-link" href="blog.html">Blog</a></li>
 					<li><a class="nav-link" href="contact.html">Contact us</a></li>
-					<li><a class="nav-link" asp-action="index" asp-controller="Dashboard">Dashboard</a></li>
+					@if(User.IsInRole("Admin"))  // check if user type is an admin
+					{
+						<li><a class="nav-link" asp-action="index" asp-controller="Dashboard">Dashboard</a></li>
+					}
+
 				</ul>
 
 				<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-					<li><a class="nav-link" asp-action="login" asp-controller="Account"><img src="~/asset/images/user.svg"></a></li>
 					<li><a class="nav-link" href="cart.html"><img src="~/asset/images/cart.svg"></a></li>
+					<partial name="_LoginPartial" />
 				</ul>
+			
 			</div>
-			<partial name="_LoginPartial"/>
+
 		</div>
 
 	</nav>

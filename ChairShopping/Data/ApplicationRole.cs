@@ -4,5 +4,6 @@ namespace ChairShopping.Data
 {
     public class ApplicationRole:IdentityRole
     {
+
     }
 }
