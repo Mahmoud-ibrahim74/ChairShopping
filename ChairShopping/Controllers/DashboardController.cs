@@ -5,6 +5,7 @@ using ChairShopping.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChairShopping.Controllers
@@ -319,7 +320,95 @@ namespace ChairShopping.Controllers
             return View();
         }
         ///////////////////////////////////////////////////////////////////////////////////////////
-        
+        public async Task<IActionResult> GetAllProducts()
+        {
+            ViewBag.AllProducts = await _repo.GetAllProducts();
+            return View();
+        }
+        public async Task<IActionResult> AddProduct()
+        {
+            var Subproducts = await _repo.GetAllCategories();
+            var model = new ProductViewModel
+            {
+                categoriesList= Subproducts.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.CategoryName
+                }).ToList()
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult<Product>> AddProduct(ProductViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _repo.AddProduct(model);
+                return RedirectToAction("GetAllProducts");
+            }
+            else
+            {
+                ModelState.AddModelError("Key", "something wrong in validation");
+            }
+            return View();
+        }
+        public async Task<ActionResult<Product>> EditProduct(int id)
+        {
+            var Subproducts = await _repo.GetAllCategories();
+            var model = new ProductViewModel
+            {
+                categoriesList = Subproducts.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.CategoryName
+                }).ToList()
+            };
+            if (id > 0)
+            {
+                var prd = await _repo.GetProductById(id);
+                if (prd != null)
+                {
+                    ViewBag.UpdateProduct = prd;
+                }
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult<Product>> EditProduct(ProductViewModel model, int id)
+        {
+            await _repo.EditProduct(model, id);
+            return RedirectToAction("GetAllProducts", "Dashboard");
+        }
+        public async Task<ActionResult<Product>> DeleteProduct(int id)
+        {
+            if (id > 0)
+            {
+                var prd = await _repo.GetProductById(id);
+                if (prd != null)
+                {
+                    ViewBag.Updateprd = prd;
+                }
+            }
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult<Product>> DeleteProduct(int id, Product model)
+        {
+            await _repo.DeleteProduct(id);
+            return RedirectToAction("GetAllProducts", "Dashboard");
+        }
+        public async Task<ActionResult<Product>> GetProductDetails(int id)
+        {
+            if (id > 0)
+            {
+                var prd = await _repo.GetProductById(id);
+                if (prd != null)
+                {
+                    ViewBag.Updateprd = prd;
+                }
+            }
+            return View();
+        }
     }
 }
 

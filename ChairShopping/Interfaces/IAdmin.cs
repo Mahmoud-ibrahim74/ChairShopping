@@ -29,7 +29,11 @@ namespace ChairShopping.Interfaces
         public Task<Category> GetCategoryById(int id);
         public Task<Category> DeleteCategory(int id);
         ////////////////////////////////////////////////////////////////////////////////
-        
+        public Task<IEnumerable<Product>> GetAllProducts();
+        public Task<Product> AddProduct(ProductViewModel model);
+        public Task<Product> EditProduct(ProductViewModel model, int id);
+        public Task<Product> GetProductById(int id);
+        public Task<Product> DeleteProduct(int id);
 
     }
 }

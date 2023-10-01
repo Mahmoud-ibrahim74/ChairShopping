@@ -296,5 +296,95 @@ namespace ChairShopping.Repositories
             await _db.SaveChangesAsync();
             return category;
         }
+
+        public async Task<IEnumerable<Product>> GetAllProducts()
+        {
+            return await _db.products.Include(x => x.Category).ToListAsync();
+        }
+
+        public async Task<Product> AddProduct(ProductViewModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            var product = await _db.products.Include(x=>x.Category).FirstOrDefaultAsync(x => x.ProductName == model.ProductName);
+            if (product != null)
+            {
+                return null;
+            }
+            var folderPath = Directory.GetCurrentDirectory() + "/wwwroot/asset/images";
+            var folderName = Path.GetFileName(model.Image.FileName);
+            var finalPath = Path.Combine(folderPath, folderName);
+            using (var stream = new FileStream(finalPath, FileMode.Create))
+            {
+                await model.Image.CopyToAsync(stream);
+            }
+            var newprd = new Product
+            {
+                ProductName = model.ProductName,
+                Color = model.Color,
+                Price = model.Price,
+                ProductDescription = model.ProductDescription,
+                ProductCreation = model.ProductCreation,
+                Image = model.Image.FileName,
+                CategoryId = model.CategoryId
+            };
+            await _db.products.AddAsync(newprd);
+            await _db.SaveChangesAsync();
+            return newprd;
+        }
+
+        public async Task<Product> EditProduct(ProductViewModel model, int id)
+        {
+            if (id < 0 && model == null)
+            {
+                return null;
+            }
+            var prd = await GetProductById(id);
+            if (prd == null)
+            {
+                return null;
+            }
+            var folderPath = Directory.GetCurrentDirectory() + "/wwwroot/asset/images";
+            var folderName = Path.GetFileName(model.Image.FileName);
+            var finalPath = Path.Combine(folderPath, folderName);
+            using (var stream = new FileStream(finalPath, FileMode.Create))
+            {
+                await model.Image.CopyToAsync(stream);
+            }
+            prd.ProductDescription = model.ProductDescription;
+            prd.ProductCreation = model.ProductCreation;
+            prd.ProductName = model.ProductName;
+            prd.Price = model.Price;
+            prd.Color = model.Color;
+            prd.Image = model.Image.FileName;
+            prd.CategoryId = model.CategoryId;
+            _db.products.Update(prd);
+            await _db.SaveChangesAsync();
+            return prd;
+        }
+
+        public async Task<Product> GetProductById(int id)
+        {
+            var prd = await _db.products.Include(x=>x.Category).FirstOrDefaultAsync(x => x.Id == id);
+            if (prd == null)
+            {
+                return null;
+            }
+            return prd;
+        }
+
+        public async Task<Product> DeleteProduct(int id)
+        {
+            var prd = await GetProductById(id);
+            if (prd == null)
+            {
+                return null;
+            }
+            _db.products.Remove(prd);
+            await _db.SaveChangesAsync();
+            return prd;
+        }
     }
 }
