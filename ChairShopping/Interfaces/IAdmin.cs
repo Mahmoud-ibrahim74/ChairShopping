@@ -28,6 +28,8 @@ namespace ChairShopping.Interfaces
         public Task<Category> EditCategory(Category model, int id);
         public Task<Category> GetCategoryById(int id);
         public Task<Category> DeleteCategory(int id);
+        ////////////////////////////////////////////////////////////////////////////////
+        
 
     }
 }

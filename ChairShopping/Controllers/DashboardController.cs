@@ -288,7 +288,7 @@ namespace ChairShopping.Controllers
             await _repo.EditCategory(model, id);
             return RedirectToAction("GetAllCategories", "Dashboard");
         }
-        public async Task<ActionResult> DeleteCategory(int id)
+        public async Task<ActionResult<Category>> DeleteCategory(int id)
         {
             if (id > 0)
             {
@@ -318,6 +318,8 @@ namespace ChairShopping.Controllers
             }
             return View();
         }
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        
     }
 }
 
