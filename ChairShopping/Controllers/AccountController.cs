@@ -130,9 +130,13 @@ namespace ChairShopping.Controllers
 				{
 					ModelState.AddModelError(string.Empty, "Email doesn't  Exist !!");
 				}
-
-
-			}
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Email doesn't  Exist !!");
+                }
+            
 
 			// If we got this far, something failed, redisplay the form
 			return View(forgetPassword);
