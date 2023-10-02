@@ -34,6 +34,11 @@ namespace ChairShopping.Interfaces
         public Task<Product> EditProduct(ProductViewModel model, int id);
         public Task<Product> GetProductById(int id);
         public Task<Product> DeleteProduct(int id);
-
+        ////////////////////////////////////////////////////////////////////////////////
+        public Task<IEnumerable<Order>> GetAllOrders();
+        public Task<Order> AddOrder(OrderViewModel model);
+        public Task<Order> EditOrder(OrderViewModel model, int id);
+        public Task<Order> GetOrderById(int id);
+        public Task<Order> DeleteOrder(int id);
     }
 }

@@ -386,5 +386,78 @@ namespace ChairShopping.Repositories
             await _db.SaveChangesAsync();
             return prd;
         }
+
+        public async Task<IEnumerable<Order>> GetAllOrders()
+        {
+            return await _db.orders.Include(x => x.User).Include(x => x.Product).ThenInclude(x => x.Category).ToListAsync();
+        }
+
+        public async Task<Order> AddOrder(OrderViewModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            model.TotalPrice = (model.Price * model.Quantity) - model.Discount;
+            var order = new Order
+            {
+                Discount = model.Discount,
+                Price = model.Price,
+                Quantity = model.Quantity,
+                ProductId = model.ProductId,
+                UserId = model.UserId,
+                OrderDate = model.OrderDate,
+                TotalPrice = model.TotalPrice
+            };
+            await _db.orders.AddAsync(order);
+            await _db.SaveChangesAsync();
+            return order;
+        }
+
+        public async Task<Order> EditOrder(OrderViewModel model, int id)
+        {
+            if (id < 0 && model == null)
+            {
+                return null;
+            }
+            var order = await GetOrderById(id);
+            if (order == null)
+            {
+                return null;
+            }
+            model.TotalPrice = (model.Price * model.Quantity) - model.Discount;
+            order.OrderDate = model.OrderDate;
+            order.Price = model.Price;
+            order.Quantity = model.Quantity;
+            order.ProductId = model.ProductId;
+            order.UserId = model.UserId;
+            order.Discount = model.Discount;
+            order.TotalPrice = model.TotalPrice;
+            _db.orders.Update(order);
+            await _db.SaveChangesAsync();
+            return order;
+        }
+
+        public async Task<Order> GetOrderById(int id)
+        {
+            var order = await _db.orders.Include(x => x.User).Include(x=>x.Product).ThenInclude(x=>x.Category).FirstOrDefaultAsync(x => x.Id == id);
+            if (order == null)
+            {
+                return null;
+            }
+            return order;
+        }
+
+        public async Task<Order> DeleteOrder(int id)
+        {
+            var order = await GetOrderById(id);
+            if (order == null)
+            {
+                return null;
+            }
+            _db.orders.Remove(order);
+            await _db.SaveChangesAsync();
+            return order;
+        }
     }
 }

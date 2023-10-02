@@ -409,6 +409,110 @@ namespace ChairShopping.Controllers
             }
             return View();
         }
+        //////////////////////////////////////////////////////////////////////////////////////////
+        public async Task<IActionResult> GetAllOrders()
+        {
+            ViewBag.AllOrders = await _repo.GetAllOrders();
+            return View();
+        }
+        public async Task<IActionResult> AddOrder()
+        {
+            var Subproducts = await _repo.GetAllProducts();
+            var subUsers = await _repo.GetAllUsers();
+            var model = new OrderViewModel
+            {
+                productList = Subproducts.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.ProductName
+                }).ToList(),
+                userList = subUsers.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.UserName
+                }).ToList()
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult<Order>> AddOrder(OrderViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _repo.AddOrder(model);
+                return RedirectToAction("GetAllOrders");
+            }
+            else
+            {
+                ModelState.AddModelError("Key", "something wrong in validation");
+            }
+            return View();
+        }
+        public async Task<ActionResult<Order>> EditOrder(int id)
+        {
+            var Subproducts = await _repo.GetAllProducts();
+            var subUsers = await _repo.GetAllUsers();
+            var model = new OrderViewModel
+            {
+                productList = Subproducts.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.ProductName
+                }).ToList(),
+                userList = subUsers.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.UserName
+                }).ToList()
+            };
+            if (id > 0)
+            {
+                var order = await _repo.GetOrderById(id);
+                if (order != null)
+                {
+                    ViewBag.Updateorder = order;
+                }
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult<Order>> EditOrder(OrderViewModel model, int id)
+        {
+            await _repo.EditOrder(model, id);
+            return RedirectToAction("GetAllOrders", "Dashboard");
+        }
+        public async Task<ActionResult<Order>> DeleteOrder(int id)
+        {
+            if (id > 0)
+            {
+                var order = await _repo.GetOrderById(id);
+                if (order != null)
+                {
+                    ViewBag.Deleteorder = order;
+                }
+            }
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult<Order>> DeleteOrder(int id, Order model)
+        {
+            await _repo.DeleteOrder(id);
+            return RedirectToAction("GetAllOrders", "Dashboard");
+        }
+        public async Task<ActionResult<Order>> GetOrderDetails(int id)
+        {
+            if (id > 0)
+            {
+                var order = await _repo.GetOrderById(id);
+                if (order != null)
+                {
+                    ViewBag.orderDetail = order;
+                }
+            }
+            return View();
+        }
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        
     }
 }
 
