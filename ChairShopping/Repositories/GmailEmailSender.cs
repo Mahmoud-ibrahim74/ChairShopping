@@ -12,7 +12,7 @@ namespace ChairShopping.Repositories
         public GmailEmailSender()
         {
             _smtpClient = new SmtpClient("smtp.gmail.com", 587);
-            _smtpClient.UseDefaultCredentials = false;
+            _smtpClient.UseDefaultCredentials = true;
             _smtpClient.EnableSsl = true;
             _smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             _smtpClient.Credentials = new NetworkCredential("hooda01018904042@gmail.com", "");
