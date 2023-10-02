@@ -22,9 +22,20 @@ namespace ChairShopping.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var orders =await _repo.GetAllOrders();
+            var products =await _repo.GetAllProducts();
+            var categories=await _repo.GetAllCategories();
+            var users = await _repo.GetAllUsers();
+            var model = new DashboardViewModel
+            {
+                Category = categories,
+                Order = orders,
+                Product = products,
+                Users = users        
+            };
+            return View(model);
         }
         public async Task<IActionResult> GetAllUsers()
         {
