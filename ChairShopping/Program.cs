@@ -45,6 +45,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 
 #region Interfaces and repo 
 builder.Services.AddScoped<IAdmin, Admin>();
+builder.Services.AddScoped<ICart, Cart>();
+
 #endregion
 var app = builder.Build();
 
