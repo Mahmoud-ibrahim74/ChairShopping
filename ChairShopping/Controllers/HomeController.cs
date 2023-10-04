@@ -30,5 +30,11 @@ namespace ChairShopping.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpPost]
+        public IActionResult ProductClasses(string categ_id)
+        {
+            int cast_id = Convert.ToInt32(categ_id);
+            return ViewComponent("ProductClasses",cast_id);
+        }
     }
 }
