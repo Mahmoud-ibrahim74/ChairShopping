@@ -24,16 +24,22 @@ namespace ChairShopping.Interfaces
         public Task<UserRoleViewModel> DeleteUserRole(UserRoleViewModel model);
         /////////////////////////////////////////////////////////////////////////
         public Task<IEnumerable<Category>> GetAllCategories();
+        public Task<List<Category>> GetCategoriesLimitAsync(int limit);
+
         public Task<Category> AddCategory(Category model);
         public Task<Category> EditCategory(Category model, int id);
         public Task<Category> GetCategoryById(int id);
         public Task<Category> DeleteCategory(int id);
         ////////////////////////////////////////////////////////////////////////////////
         public Task<IEnumerable<Product>> GetAllProducts();
+        public Task<List<Product>> GetProductsLimitAsync(int limit);
+
         public Task<Product> AddProduct(ProductViewModel model);
         public Task<Product> EditProduct(ProductViewModel model, int id);
         public Task<Product> GetProductById(int id);
         public Task<Product> DeleteProduct(int id);
+        public Task<List<Product>> GetProductsByCatgoryIdAsync(int id);
+
         ////////////////////////////////////////////////////////////////////////////////
         public Task<IEnumerable<Order>> GetAllOrders();
         public Task<Order> AddOrder(OrderViewModel model);

@@ -14,6 +14,9 @@ namespace ChairShopping.ViewModel
         public string ConfirmPassword { get; set; }
         [Required]
         public bool IsAgree { get; set; }
+        [Required]
+        public IFormFile UserImage { get; set; }
 
-    }
+
+	}
 }

@@ -71,6 +71,9 @@ namespace ChairShopping.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsAgree")
                         .HasColumnType("bit");
 

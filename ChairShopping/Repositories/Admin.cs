@@ -5,6 +5,7 @@ using ChairShopping.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Collections.Generic;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ChairShopping.Repositories
@@ -458,6 +459,36 @@ namespace ChairShopping.Repositories
             _db.orders.Remove(order);
             await _db.SaveChangesAsync();
             return order;
+        }
+
+        public async Task<List<Category>> GetCategoriesLimitAsync(int limit)
+        {
+            var categ_limit = await _db.categories.Take(limit).ToListAsync();
+            if (categ_limit == null)
+            {
+                return null;
+            }
+            return categ_limit;
+        }
+
+        public async Task<List<Product>> GetProductsLimitAsync(int limit)
+        {
+            var prod_limit = await _db.products.Take(limit).ToListAsync();
+            if (prod_limit == null)
+            {
+                return null;
+            }
+            return prod_limit;
+        }
+        [Obsolete("Notes This Method Return Only 10 Products")]
+        public async Task<List<Product>> GetProductsByCatgoryIdAsync(int id)
+        {
+            var _products = await _db.products.Where(x => x.CategoryId == id).Take(10).ToListAsync();
+            if (_products == null)
+            {
+                return null;
+            }
+            return _products;
         }
     }
 }
