@@ -1,16 +1,11 @@
-<<<<<<< HEAD
-﻿@{
-	ViewData["Title"] = "Home";
-	Layout = "_Layout";
-=======
-﻿@using ChairShopping.Interfaces;
+
+@using ChairShopping.Interfaces;
 @inject IAdmin _data;
 
 @{
     ViewData["Title"] = "Home";
     var allCteg = await _data.GetCategoriesLimitAsync(10);
-    
->>>>>>> a6b855ac292393dac0c5b0fd7b39954687b91db4
+    Layout = "_Layout";
 }
 <html>
 <head>

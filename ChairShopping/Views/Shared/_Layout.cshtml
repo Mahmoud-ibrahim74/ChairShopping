@@ -61,20 +61,17 @@
 					}
 
 				</ul>
-<<<<<<< HEAD
 					@if(SignInManager.IsSignedIn(User))  // check if user type is an admin
 					{
 						<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						<li><a class="nav-link" asp-action="GetCartById" asp-controller="Cart" asp-route-Id="@UserManager.GetUserId(User)"><img src="~/asset/images/cart.svg"></a></li>
-							<partial name="_LoginPartial" />
 						</ul>
 					}
-=======
-				<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+@* 				<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 					<li><a class="nav-link" href="cart.html"><img src="~/asset/images/cart.svg"></a></li>
-				</ul>
+				</ul> *@
 			
->>>>>>> a6b855ac292393dac0c5b0fd7b39954687b91db4
+
 			</div>
 
 		</div>
