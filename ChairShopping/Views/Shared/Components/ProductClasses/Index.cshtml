@@ -1,6 +1,9 @@
 ﻿@using ChairShopping.Interfaces;
 @model List<ChairShopping.Models.Product>
+@using Microsoft.AspNetCore.Identity
 
+@inject SignInManager<ApplicationUser> _SignInManager
+@inject UserManager<ApplicationUser> _UserManager
 @if(Model.Count() == 0)
 {
     <h4 style="color:red;">No Products for this Category</h4>
@@ -13,9 +16,19 @@
         </div>
         <div class="cart-concern">
             <div class="cart-button d-flex justify-content-between align-items-center">
-                <button type="button" class="btn-wrap cart-link d-flex align-items-center">
-                    add to cart <i class="icon icon-arrow-io"></i>
-                </button>
+                <form asp-action="AddToCart" asp-controller="Cart" method="get">
+                    <input type="hidden" name="Price" value="@items.Price" />
+                    <input type="hidden" name="ProductId" value="@items.Id" />
+                    <input type="hidden" name="Discount" value="500" />
+                    <input type="hidden" name="Quantity" value="1" />
+                    @if (_SignInManager.IsSignedIn(User))
+                    {
+                        <input type="hidden" name="UserId" value="@_UserManager.GetUserId(User)" />
+                    }
+                    <button type="submit" class="btn-wrap btn-dark cart-link d-flex align-items-center">
+                        add to cart <i class="icon icon-arrow-io"></i>
+                    </button>                    
+                </form>
                 <button type="button" class="view-btn tooltip
                         d-flex">
                     <i class="icon icon-screen-full"></i>

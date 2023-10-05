@@ -19,38 +19,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in ViewBag.Orders)
-                            {
-                                <tr>
-                                    <td class="product-thumbnail">
-                                        <img src="~/asset/images/@item.Product.Image" alt="Image" class="img-fluid">
-                                    </td>
-                                    <td class="product-name">
-                                        <h2 class="h5 text-black">@item.Product.ProductName</h2>
-                                    </td>
-                                    <td>
-                                        <h2 class="h5 text-black">$@item.Product.Price</h2>
-                                    </td>
-                                    <td>
-@*                                         <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-outline-black decrease" type="button">&minus;</button>
-                                            </div>
-                                            <input type="text" class="form-control text-center quantity-amount" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-black increase" type="button">&plus;</button>
-                                            </div>
-                                        </div> *@
-                                        <h2 class="h5 text-black">@item.Quantity</h2>
-
-                                    </td>
-                                    <td>
-                                    <h2 class="h5 text-black">$@item.TotalPrice</h2>
-                                    </td>
-                                    <td><a asp-action="RemoveOrder" asp-controller="Cart"asp-route-id="@item.Id" class="btn btn-black btn-sm">X</a></td>
-                                </tr>
+                            @if (ViewBag.UserOrder == true)
+                            {                           
+                                <h4 style="color:red; display:flex;align-items:center;justify-content:center ">You have no order yet!!!!</h4>
                             }
-
+                            @if (ViewBag.Orders !=null)
+                            {
+                                @foreach (var item in ViewBag.Orders)
+                                {
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <img src="~/asset/images/@item.Product.Image" alt="Image" class="img-fluid">
+                                        </td>
+                                        <td class="product-name">
+                                            <h2 class="h5 text-black">@item.Product.ProductName</h2>
+                                        </td>
+                                        <td>
+                                            <h2 class="h5 text-black">$@item.Product.Price</h2>
+                                        </td>
+                                        <td>
+                                            <h2 class="h5 text-black">@item.Quantity</h2>
+                                        </td>
+                                        <td>
+                                            <h2 class="h5 text-black">$@item.TotalPrice</h2>
+                                        </td>
+                                        <td><a asp-action="RemoveOrder" asp-controller="Cart" asp-route-id="@item.Id" class="btn btn-black btn-sm">X</a></td>
+                                    </tr>
+                                }
+                            }
                         </tbody>
                     </table>
                 </div>

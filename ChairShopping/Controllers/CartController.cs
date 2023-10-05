@@ -1,8 +1,10 @@
-﻿using ChairShopping.Interfaces;
+﻿using ChairShopping.Data;
+using ChairShopping.Interfaces;
 using ChairShopping.Migrations;
 using ChairShopping.Models;
 using ChairShopping.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChairShopping.Controllers
 {
@@ -10,11 +12,13 @@ namespace ChairShopping.Controllers
     {
 		private readonly ICart _cart;
 		private readonly IAdmin _repo;
+        private readonly AppDbContext _db;
 
-		public CartController(ICart cart,IAdmin repo)
+        public CartController(ICart cart,IAdmin repo, AppDbContext db)
         {
             _cart = cart;
             _repo=repo;
+            _db = db;
         }
         public async Task<IActionResult> GetCartById(string Id)
         {
@@ -24,7 +28,15 @@ namespace ChairShopping.Controllers
                 return null;
             }
             var orders =await _cart.GetCartById(Id);
-            ViewBag.Orders = orders;
+            var user_Order = await _db.orders.Where(x => x.UserId == user.Id).ToListAsync();
+            if (orders.Count()==0 && user_Order.Count()==0)
+            {
+                ViewBag.UserOrder = true;
+            }
+            else
+            {
+                ViewBag.Orders = orders;
+            }
             var Total = await _cart.TotalOrderPrice(Id);
             ViewBag.Total = Total;
             return View();
@@ -49,5 +61,14 @@ namespace ChairShopping.Controllers
             await _cart.RemoveFromCart(id);
             return RedirectToAction("GetCartById","Cart",new {Id = ViewBag.UserId });
         }
+        [HttpGet]
+        public async Task<ActionResult<Order>> AddToCart(OrderViewModel model)
+        {
+            var order =  await _cart.AddToCart(model);
+            ViewBag.UserId = order.UserId;
+            //return RedirectToAction("GetCartById", "Cart", new { Id = ViewBag.UserId });
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

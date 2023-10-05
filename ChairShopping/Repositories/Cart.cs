@@ -19,9 +19,14 @@ namespace ChairShopping.Repositories
 
 		public decimal TotalPrice { get; set; } = 0;
 
-		public Task<Order> AddToCart(OrderViewModel model)
+		public async Task<Order> AddToCart(OrderViewModel model)
 		{
-			throw new NotImplementedException();
+			if (model == null)
+			{
+				return null;
+			}
+			var order =  await _repo.AddOrder(model);
+			return order;
 		}
 
 		public async Task<IEnumerable<Order>> GetAllCarts()
