@@ -5,6 +5,7 @@
     ViewData["Title"] = "Home";
     var allCteg = await _data.GetCategoriesLimitAsync(10);
     Layout = "_Layout";
+    var allProd = _data.GetAllProducts().Result.Count();
 }
 <html>
 <head>
@@ -22,10 +23,11 @@
             </div>
 
             <ul id="categoy-tabs" class="tabs list-unstyled">
-                <li class="tab"><a id="all" onclick="GetProductsAsync(0)">All</a></li>
+                <li class="tab"><a id="all" onclick="GetProductsAsync(0)">All <span style="color:#066f9f">(@allProd)</span></a></li>
                 @foreach (var items in allCteg)
                 {
-                    <li class="tab"><a id="@items.Id" onclick="GetProductsAsync(@items.Id)">@items.CategoryName</a></li>
+                    var getprodCount = _data.GetProductsByCatgoryIdAsync(items.Id).Result.Count();
+                    <li class="tab"><a id="@items.Id" onclick="GetProductsAsync(@items.Id)">@items.CategoryName <span style="color:#066f9f">(@getprodCount)</span></a></li>
                 }
             </ul>
 
