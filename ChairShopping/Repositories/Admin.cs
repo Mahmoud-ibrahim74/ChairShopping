@@ -490,5 +490,71 @@ namespace ChairShopping.Repositories
             }
             return _products;
         }
+
+        public async Task<IEnumerable<Coupon>> GetAllCoupons()
+        {
+            return await _db.coupons.ToListAsync();
+        }
+
+        public async Task<Coupon> GetCouponsById(int id)
+        {
+            var coupon = await _db.coupons.FirstOrDefaultAsync(x => x.Id == id);
+            if (coupon ==null)
+            {
+                return null;
+            }
+            return coupon;
+        }
+
+        public async Task<Coupon> AddCoupon(CouponViewModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            if (model.ExpireDate < DateTime.Now)
+            {
+                model.IsExpired = true;
+            }
+            var coupon = new Coupon
+            { 
+                CouponCode = model.CouponCode,
+                ExpireDate = model.ExpireDate,
+                IsExpired = model.IsExpired
+            };
+            await _db.coupons.AddAsync(coupon);
+            await _db.SaveChangesAsync();
+            return coupon;
+        }
+
+        public async Task<Coupon> EditCoupon(CouponViewModel model, int id)
+        {
+            if (id < 0 && model == null)
+            {
+                return null;
+            }
+            var coupon = await GetCouponsById(id);
+            if (coupon == null)
+            {
+                return null;
+            }
+            coupon.ExpireDate = model.ExpireDate;
+            coupon.CouponCode = model.CouponCode;
+            _db.coupons.Update(coupon);
+            await _db.SaveChangesAsync();
+            return coupon;
+        }
+
+        public async Task<Coupon> DeleteCoupon(int id)
+        {
+            var coupon = await GetCouponsById(id);
+            if (coupon == null)
+            {
+                return null;
+            }
+            _db.coupons.Remove(coupon);
+            await _db.SaveChangesAsync();
+            return coupon;
+        }
     }
 }

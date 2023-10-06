@@ -69,6 +69,22 @@ namespace ChairShopping.Controllers
             //return RedirectToAction("GetCartById", "Cart", new { Id = ViewBag.UserId });
             return RedirectToAction("Index", "Home");
         }
-
+        //[HttpPost]
+        //public async Task<IActionResult> Coupon(CouponViewModel model)
+        //{
+        //    //coupons , modelcoupon
+        //    var coupons = await _repo.GetAllCoupons();
+        //    foreach (var item in coupons)
+        //    {
+        //        if (model.CouponCode==item.CouponCode)
+        //        {
+        //            return RedirectToAction("GetCartById", "Cart");
+        //        }
+        //        else
+        //        {
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //    }
+        //}
     }
 }

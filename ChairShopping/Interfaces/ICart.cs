@@ -10,8 +10,6 @@ namespace ChairShopping.Interfaces
         public Task<IEnumerable<Order>> GetCartById(string id);
 	    public Task<Order> AddToCart(OrderViewModel model);
         public Task<Order> RemoveFromCart(int id);
-
         public Task<decimal> TotalOrderPrice(string Id);
-
     }
 }

@@ -14,5 +14,6 @@ namespace ChairShopping.Data
         public DbSet<Category> categories { get; set; }
         public DbSet<Product> products { get; set; }
         public DbSet<Order> orders { get; set; }
+        public DbSet<Coupon> coupons { get; set; }
     }
 }

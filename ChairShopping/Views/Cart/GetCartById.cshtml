@@ -58,12 +58,13 @@
                 <div class="row mb-5">
                     <div class="col-md-6 mb-3 mb-md-0">
 @*                         <button class="btn btn-success btn-sm btn-block">Update Cart</button>
- *@                        <button class="btn btn-outline-success btn-sm btn-block">Update Cart</button>
+ *@                        <a href="#" class="btn btn-outline-success btn-sm btn-block">Update Cart</a>
                     </div>
                     <div class="col-md-6">
-                        <button class="btn btn-outline-success btn-sm btn-block">Continue Shopping</button>
+                        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-success btn-sm btn-block">Continue Shopping</a>
                     </div>
                 </div>
+                <!--Coupons-->
                 <div class="row">
                     <div class="col-md-12">
                         <label class="text-black h4" for="coupon">Coupon</label>
@@ -76,6 +77,8 @@
                         <button class="btn btn-outline-success btn-block">Apply Coupon</button>
                     </div>
                 </div>
+
+                <!--Coupons-->
                 <a asp-action="Index" asp-controller="Home" class="btn btn-outline-success btn-lg btn-block m-5">Back</a>
             </div>
             <div class="col-md-6 pl-5">

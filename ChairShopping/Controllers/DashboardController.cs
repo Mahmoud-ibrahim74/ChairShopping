@@ -28,12 +28,14 @@ namespace ChairShopping.Controllers
             var products =await _repo.GetAllProducts();
             var categories=await _repo.GetAllCategories();
             var users = await _repo.GetAllUsers();
+            var coupons = await _repo.GetAllCoupons();
             var model = new DashboardViewModel
             {
                 Category = categories,
                 Order = orders,
                 Product = products,
-                Users = users        
+                Users = users,
+                Coupons = coupons        
             };
             return View(model);
         }
@@ -523,7 +525,77 @@ namespace ChairShopping.Controllers
             return View();
         }
         /////////////////////////////////////////////////////////////////////////////////////////////
-        
+        public async Task<IActionResult> GetAllCoupons()
+        {
+            ViewBag.AllCoupons = await _repo.GetAllCoupons();
+            return View();
+        }
+        public  IActionResult AddCoupon()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult<Coupon>> AddCoupon(CouponViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _repo.AddCoupon(model);
+                return RedirectToAction("GetAllCoupons");
+            }
+            else
+            {
+                ModelState.AddModelError("Key", "something wrong in validation");
+            }
+            return View();
+        }
+        public async Task<ActionResult<Coupon>> EditCoupon(int id)
+        {
+            if (id > 0)
+            {
+                var coupon = await _repo.GetCouponsById(id);
+                if (coupon != null)
+                {
+                    ViewBag.Updatecoupon = coupon;
+                }
+            }
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult<Coupon>> EditCoupon(CouponViewModel model, int id)
+        {
+            await _repo.EditCoupon(model, id);
+            return RedirectToAction("GetAllCoupons", "Dashboard");
+        }
+        public async Task<ActionResult<Coupon>> DeleteCoupon(int id)
+        {
+            if (id > 0)
+            {
+                var coupon = await _repo.GetCouponsById(id);
+                if (coupon != null)
+                {
+                    ViewBag.Deletecoupon = coupon;
+                }
+            }
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult<Coupon>> DeleteCoupon(int id, Coupon model)
+        {
+            await _repo.DeleteCoupon(id);
+            return RedirectToAction("GetAllCoupons", "Dashboard");
+        }
+        public async Task<ActionResult<Coupon>> GetCouponDetails(int id)
+        {
+            if (id > 0)
+            {
+                var Coupon = await _repo.GetCouponsById(id);
+                if (Coupon != null)
+                {
+                    ViewBag.CouponDetail = Coupon;
+                }
+            }
+            return View();
+        }
     }
 }
 
