@@ -64,7 +64,7 @@
                         <a asp-action="Index" asp-controller="Home" class="btn btn-outline-success btn-sm btn-block">Continue Shopping</a>
                     </div>
                 </div>
-                <!--Coupons-->
+@*                 <!--Coupons-->
                 <div class="row">
                     <div class="col-md-12">
                         <label class="text-black h4" for="coupon">Coupon</label>
@@ -78,7 +78,7 @@
                     </div>
                 </div>
 
-                <!--Coupons-->
+                <!--Coupons--> *@
                 <a asp-action="Index" asp-controller="Home" class="btn btn-outline-success btn-lg btn-block m-5">Back</a>
             </div>
             <div class="col-md-6 pl-5">
@@ -105,12 +105,14 @@
                                 <strong class="text-black">@ViewBag.Total</strong>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a asp-action="Index" asp-controller="PlaceOrder" class="btn btn-success btn-lg py-3 btn-success">Proceed To Checkout</a>
+                        @if (ViewBag.UserOrder==false)
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a asp-action="PlaceOrder" asp-controller="PlaceOrder" class="btn btn-success btn-lg py-3 btn-success">Proceed To Checkout</a>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>

@@ -24,7 +24,8 @@ namespace ChairShopping.Controllers
             _UserManager = UserManager;
             _cart = cart;
 		}
-        public async Task<IActionResult> Index()
+		[HttpGet]
+        public async Task<IActionResult> PlaceOrder()
         {
 			if (_SignInManager.IsSignedIn(User))
 			{
@@ -91,7 +92,7 @@ namespace ChairShopping.Controllers
 				}
 				return RedirectToAction("ConfirmOrder");
 			}
-            return View();
+            return View(model);
         }
         public IActionResult ConfirmOrder()
         {

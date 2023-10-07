@@ -20,7 +20,7 @@
                     <input type="hidden" name="Price" value="@items.Price" />
                     <input type="hidden" name="ProductId" value="@items.Id" />
                     <input type="hidden" name="Discount" value="500" />
-                    <input type="hidden" name="Quantity" value="2" />
+                    <input type="text" name="Quantity" value="1"/>
                     @if (_SignInManager.IsSignedIn(User))
                     {
                         <input type="hidden" name="UserId" value="@_UserManager.GetUserId(User)" />

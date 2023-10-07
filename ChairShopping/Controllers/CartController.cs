@@ -35,6 +35,7 @@ namespace ChairShopping.Controllers
             }
             else
             {
+                ViewBag.UserOrder = false;
                 ViewBag.Orders = orders;
             }
             var Total = await _cart.TotalOrderPrice(Id);
@@ -64,27 +65,20 @@ namespace ChairShopping.Controllers
         [HttpGet]
         public async Task<ActionResult<Order>> AddToCart(OrderViewModel model)
         {
+            ////fake solution
+            //var products = await _repo.GetAllProducts();
+            ////var orders = await _repo.GetAllOrders();
+            //foreach (var item in products)
+            //{
+            //    if (model.ProductId == item.Id)
+            //    {
+            //        ViewBag.order = model;
+            //        break;
+            //    }
+            //}
             var order =  await _cart.AddToCart(model);
             ViewBag.UserId = order.UserId;
-            //return RedirectToAction("GetCartById", "Cart", new { Id = ViewBag.UserId });
             return RedirectToAction("Index", "Home");
         }
-        //[HttpPost]
-        //public async Task<IActionResult> Coupon(CouponViewModel model)
-        //{
-        //    //coupons , modelcoupon
-        //    var coupons = await _repo.GetAllCoupons();
-        //    foreach (var item in coupons)
-        //    {
-        //        if (model.CouponCode==item.CouponCode)
-        //        {
-        //            return RedirectToAction("GetCartById", "Cart");
-        //        }
-        //        else
-        //        {
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //    }
-        //}
     }
 }
