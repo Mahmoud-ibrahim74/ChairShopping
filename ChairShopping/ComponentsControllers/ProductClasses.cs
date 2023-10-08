@@ -19,7 +19,6 @@ namespace ChairShopping.ComponentsControllers
                 return View("Index", await _productClasses.GetProductsLimitAsync(10));  // view 10 products to prevent load on server
             else
             {
-                var res = await _productClasses.GetProductsByCatgoryIdAsync(categ_id);
                 return View("Index", await _productClasses.GetProductsByCatgoryIdAsync(categ_id));
             }
         }

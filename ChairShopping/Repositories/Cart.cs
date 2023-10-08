@@ -34,7 +34,7 @@ namespace ChairShopping.Repositories
 			var orders= await _db.orders.Include(x => x.Product).Include(x => x.User).ToListAsync();
 			return orders;
 		}
-		public async Task<IEnumerable<Order>> GetCartById(string id)
+		public async Task<List<Order>> GetCartById(string id)
 		{
 			if (string.IsNullOrEmpty(id))
 			{

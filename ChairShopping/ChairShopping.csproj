@@ -21,5 +21,16 @@
     <Folder Include="wwwroot\asset\images\UserImages\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\js\bootstrap.min.js" />
+    <None Include="wwwroot\js\custom.js" />
+    <None Include="wwwroot\js\jquery-3.3.1.min.js" />
+    <None Include="wwwroot\js\main.js" />
+    <None Include="wwwroot\js\popper.min.js" />
+    <None Include="wwwroot\js\ProductAjax.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\sweetalert2.all.js" />
+  </ItemGroup>
+
 
 </Project>

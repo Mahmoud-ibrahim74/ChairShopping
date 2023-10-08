@@ -44,7 +44,7 @@ namespace ChairShopping.Controllers
         }
         public async Task<ActionResult<Order>> RemoveOrder(int id)
         {
-            if (id > 0)
+            if (id != 0)
             {
                 var order = await _repo.GetOrderById(id);
                 if (order != null)
@@ -78,6 +78,7 @@ namespace ChairShopping.Controllers
             //}
             var order =  await _cart.AddToCart(model);
             ViewBag.UserId = order.UserId;
+            TempData["cart_added"] = "Product Added Sucessfully";
             return RedirectToAction("Index", "Home");
         }
     }

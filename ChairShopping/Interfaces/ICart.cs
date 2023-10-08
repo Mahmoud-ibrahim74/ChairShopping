@@ -7,7 +7,7 @@ namespace ChairShopping.Interfaces
     {
         public decimal TotalPrice { get; set; }
         public  Task<IEnumerable<Order>> GetAllCarts();
-        public Task<IEnumerable<Order>> GetCartById(string id);
+        public Task<List<Order>> GetCartById(string id);
 	    public Task<Order> AddToCart(OrderViewModel model);
         public Task<Order> RemoveFromCart(int id);
         public Task<decimal> TotalOrderPrice(string Id);

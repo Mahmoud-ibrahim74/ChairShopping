@@ -4,46 +4,63 @@
 
 @inject SignInManager<ApplicationUser> _SignInManager
 @inject UserManager<ApplicationUser> _UserManager
-@if(Model.Count() == 0)
+
+@if (Model.Count() == 0)
 {
     <h4 style="color:red;">No Products for this Category</h4>
 }
 @foreach (var items in Model)
 {
-   <div class="product-item col-lg-3 col-md-6 col-sm-6">
-        <div class="image-holder">
-            <img src="~/asset/images/@items.Image" alt="Books" class="product-image" style="height:340px">
-        </div>
-        <div class="cart-concern">
-            <div class="cart-button d-flex justify-content-between align-items-center">
-                <form asp-action="AddToCart" asp-controller="Cart" method="get">
-                    <input type="hidden" name="Price" value="@items.Price" />
-                    <input type="hidden" name="ProductId" value="@items.Id" />
-                    <input type="hidden" name="Discount" value="500" />
-                    <input type="text" name="Quantity" value="1"/>
-                    @if (_SignInManager.IsSignedIn(User))
-                    {
-                        <input type="hidden" name="UserId" value="@_UserManager.GetUserId(User)" />
-                    }
-                    <button type="submit" class="btn-wrap btn-dark cart-link d-flex align-items-center">
-                        add to cart <i class="icon icon-arrow-io"></i>
-                    </button>                    
-                </form>
-                <button type="button" class="view-btn tooltip
-                        d-flex">
-                    <i class="icon icon-screen-full"></i>
-                    <span class="tooltip-text">Quick view</span>
+    <!-- Block2 -->
+    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+        <div class="block2">
+            <form asp-action="AddToCart" asp-controller="Cart" method="get">
+                <div class="block2-pic hov-img0">
+                    <div class="block2-pic hov-img0">
+                        <img src="~/asset/images/@items.Image" alt="IMG-PRODUCT" width="200" height="300">
+                        <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                            <input type="hidden" name="Price" value="@items.Price" />
+                            <input type="hidden" name="ProductId" value="@items.Id" />
+                            <input type="hidden" name="Discount" value="0" />
+                            @if (_SignInManager.IsSignedIn(User))
+                            {
+                                <input type="hidden" name="UserId" value="@_UserManager.GetUserId(User)" />
+                            }
+                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                <i class="fs-16 zmdi zmdi-minus"></i>
+                            </div>
+
+                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="Quantity" value="1">
+
+                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                <i class="fs-16 zmdi zmdi-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="block2-txt flex-w flex-t p-t-14">
+                    <div class="block2-txt-child1 flex-col-l ">
+                        <a asp-action="Index" asp-controller="ProductDetails" asp-route-id="@items.Id" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                            Esprit Ruffle Shirt
+                        </a>
+
+                        <span class="stext-105 cl3">
+                            @items.Price $
+                        </span>
+                    </div>
+
+                    <div class="block2-txt-child2 flex-r p-t-3">
+                        <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                            <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON">
+                            <img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON">
+                        </a>
+                    </div>
+                </div>
+                <button type="submit" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+                    Add to cart
                 </button>
-                <button type="button" class="wishlist-btn">
-                    <i class="icon icon-heart"></i>
-                </button>
-            </div>
-        </div>
-        <div class="product-detail">
-            <h3 class="product-title">
-                <a asp-controller="ProductDetails" asp-action="Index" asp-route-id="@items.Id">@items.ProductName</a>  @*this anchor to link in page details *@
-            </h3>
-            <div class="item-price text-primary">$@items.Price</div>
+            </form>
         </div>
     </div>
 }

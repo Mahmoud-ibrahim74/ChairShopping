@@ -147,8 +147,8 @@ namespace ChairShopping.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("CouponCode")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CouponCode")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
