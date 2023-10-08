@@ -1,4 +1,6 @@
-﻿@model Order
+﻿@using Microsoft.AspNetCore.Identity;
+@model Order
+@inject UserManager<ApplicationUser> _UserManager;
 @{
     Layout = null;
 }
@@ -33,11 +35,15 @@
 {
     <input type="hidden" asp-for="Id" />
     <button type="submit" class="btn btn-danger">Delete</button>
+<<<<<<< HEAD
 
 
 
 
     <a asp-action="GetCartById" asp-controller="Cart" class="btn btn-secondary">Cancel</a>
+=======
+    <a asp-action="GetCartById" asp-controller="Cart" class="btn btn-secondary"asp-route-Id="@_UserManager.GetUserId(User)">Cancel</a>
+>>>>>>> bb1bdbdb398601d0e86bc2f945300036d795aaaf
     <script src="~/js/jquery-3.3.1.min.js"></script>
     <!-- popper js -->
     <script src="~/js/popper.min.js"></script>

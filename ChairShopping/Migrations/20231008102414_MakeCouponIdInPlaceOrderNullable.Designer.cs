@@ -4,6 +4,7 @@ using ChairShopping.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChairShopping.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231008102414_MakeCouponIdInPlaceOrderNullable")]
+    partial class MakeCouponIdInPlaceOrderNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,8 +150,8 @@ namespace ChairShopping.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CouponCode")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CouponCode")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");

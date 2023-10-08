@@ -12,7 +12,7 @@ namespace ChairShopping.ViewModel
 		public string Email { get; set; }
 		public string Phone { get; set; }
 		public string OrderNotes { get; set; }
-		public int CouponId { get; set; }
+		public int? CouponId { get; set; } = null;
 		public Coupon? Coupon { get; set; }
 	}
 }

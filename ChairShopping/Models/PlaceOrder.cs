@@ -9,7 +9,7 @@
         public string Email { get; set; }
         public string Phone { get; set; }
         public string OrderNotes { get; set; }
-        public int CouponId { get; set; }
+        public int? CouponId { get; set; }
         public Coupon? Coupon { get; set; }
     }
 }

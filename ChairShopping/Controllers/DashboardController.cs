@@ -566,18 +566,18 @@ namespace ChairShopping.Controllers
             await _repo.EditCoupon(model, id);
             return RedirectToAction("GetAllCoupons", "Dashboard");
         }
-        public async Task<ActionResult<Coupon>> DeleteCoupon(int id)
-        {
-            if (id > 0)
-            {
-                var coupon = await _repo.GetCouponsById(id);
-                if (coupon != null)
-                {
-                    ViewBag.Deletecoupon = coupon;
-                }
-            }
-            return View();
-        }
+        //public async Task<ActionResult<Coupon>> DeleteCoupon(int id)
+        //{
+        //    if (id > 0)
+        //    {
+        //        var coupon = await _repo.GetCouponsById(id);
+        //        if (coupon != null)
+        //        {
+        //            ViewBag.Deletecoupon = coupon;
+        //        }
+        //    }
+        //    return View();
+        //}
         [HttpPost]
         public async Task<ActionResult<Coupon>> DeleteCoupon(int id, Coupon model)
         {

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Coupon
+@{
     Layout = null;
 }
 <head>
@@ -60,7 +61,13 @@
                         <td>@item.ExpireDate</td>
                         <td>@item.IsExpired</td>
                         <td><a asp-controller="dashboard" asp-action="EditCoupon" asp-route-id="@item.Id" class="btn btn-primary">Update</a></td>
-                        <td><a asp-controller="dashboard" asp-action="DeleteCoupon" asp-route-id="@item.Id" class="btn btn-danger">Delete</a></td>
+                        <td>
+                            <form asp-controller="dashboard" asp-action="DeleteCoupon" method="post">
+                                <input type="hidden" name="Id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+
                         <td><a asp-controller="dashboard" asp-action="GetCouponDetails" asp-route-id="@item.Id" class="btn btn-success">Details</a></td>
                     </tr>
                 }
