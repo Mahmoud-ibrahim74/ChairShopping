@@ -516,6 +516,10 @@ namespace ChairShopping.Repositories
             {
                 model.IsExpired = true;
             }
+            else
+            {
+                model.IsExpired = false;
+            }
             var coupon = new Coupon
             { 
                 CouponCode = model.CouponCode,
@@ -537,6 +541,14 @@ namespace ChairShopping.Repositories
             if (coupon == null)
             {
                 return null;
+            }
+            if (model.ExpireDate < DateTime.Now)
+            {
+                coupon.IsExpired = true;
+            }
+            else
+            {
+                coupon.IsExpired = false;
             }
             coupon.ExpireDate = model.ExpireDate;
             coupon.CouponCode = model.CouponCode;

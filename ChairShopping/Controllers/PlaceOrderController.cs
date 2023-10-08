@@ -46,21 +46,33 @@ namespace ChairShopping.Controllers
 					ViewBag.total = Total;
 				}
 			}
+			var coupons = await _repo.GetAllCoupons();
+			if (coupons.Count()==0)
+			{
+				ViewBag.c = false;
+			}
+			else
+			{
+				ViewBag.c = true;
+			}
 			return View();
         }
         [HttpPost]
         public async Task<IActionResult> PlaceOrder(PlaceOrderViewModel model)
         {
 			var coupons = await _repo.GetAllCoupons();
-			foreach (var coupon in coupons)
+			if (coupons.Count()!=0)
 			{
-				if (coupon.CouponCode == model.Coupon.CouponCode)
+				foreach (var coupon in coupons)
 				{
-					model.CouponId = coupon.Id;
-				}
-				else
-				{
-					ModelState.AddModelError("", "Invalid Coupon");
+					if (coupon.CouponCode == model.Coupon.CouponCode)
+					{
+						model.CouponId = coupon.Id;
+					}
+					else
+					{
+						ModelState.AddModelError("", "Invalid Coupon");
+					}
 				}
 			}
 			if (ModelState.IsValid)
