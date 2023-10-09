@@ -63,7 +63,7 @@ namespace ChairShopping.Controllers
 				var user = await _userManager.FindByEmailAsync(register.Email);
 				if (user == null)
 				{
-                    var folderPath = Directory.GetCurrentDirectory() + "/wwwroot/asset/images/UserImages";
+                    var folderPath = Directory.GetCurrentDirectory() + "/wwwroot/images/UserImages";
                     var folderName = Path.GetFileName(register.UserImage.FileName);
                     var finalPath = Path.Combine(folderPath, folderName);
                     using (var stream = new FileStream(finalPath, FileMode.Create))

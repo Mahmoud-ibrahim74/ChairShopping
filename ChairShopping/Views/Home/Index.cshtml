@@ -16,7 +16,7 @@
 <html>
 <head>
     <title>Home</title>
-
+    <link rel="stylesheet" href="~/css/style.css" />
 
 </head>
 <body class="animsition">
@@ -26,7 +26,7 @@
             Swal.fire(
                 'Congratulations !',
                 '@TempData["cart_added"]',
-                'success'
+                'success',
             )
         </script>
     }
@@ -267,12 +267,8 @@
                     </div>
 
                     <div class="header-cart-buttons flex-w w-full">
-                        <a asp-action="GetCartById" target="_blank" asp-controller="Cart" asp-route-Id="@UserManager.GetUserId(User)" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
+                        <a asp-action="GetCartById"  asp-controller="Cart" asp-route-Id="@UserManager.GetUserId(User)" class="flex-c-m stext-101 cl0 size-270 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
                             View Cart
-                        </a>
-
-                        <a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
-                            Check Out
                         </a>
                     </div>
                 </div>
@@ -456,7 +452,7 @@
 
             <div class="flex-w flex-sb-m p-b-52">
                 <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                    <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1">
+                    <button onclick="GetProductsAsync(0)" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1">
                         All Products
                     </button>
                     @foreach (var items in allCteg)
@@ -683,19 +679,7 @@
                     </div>
                 </div>
             </div>
-            <div id="mainLoader" class="loading-area">
-                <div class="loader">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-
-
+            <span id="mainLoader" class="loader"></span>
             <div class="tab-content">
                 <div id="all" data-tab-content class="active">
                     <div id="prod-card" class="row d-flex flex-wrap">

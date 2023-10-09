@@ -6,7 +6,10 @@
 @{
     Layout = "CssScripts";
 }
+<head>
+	<title>Place Order</title>
 
+</head>
 
 	<div class="untree_co-section">
 		<div class="container">
@@ -85,11 +88,12 @@
 						}
 						@if (ViewBag.c == false)
 						{
-							<div class="row mb-5">
-								<div class="col-md-12">
-									<h2 class="h3 mb-3 text-danger">No Coupon Today</h2>
+								<div class="alert alert-danger alert-dismissible fade show" role="alert">
+									<strong>No Coupon Today!!!!!</strong>
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
 								</div>
-							</div>
 						}
 						<div class="row mb-5">
 							<div class="col-md-12">

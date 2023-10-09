@@ -1911,11 +1911,10 @@ input.num-product::-webkit-inner-spin-button {
 }
 
 .table-shopping-cart {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 680px;
+    border-collapse: collapse;
+    width: 85%;
+    min-width: 630px;
 }
-
 .table-shopping-cart tr {
   border-top: 1px solid #e6e6e6;
   border-bottom: 1px solid #e6e6e6;
@@ -2503,6 +2502,10 @@ input.num-product::-webkit-inner-spin-button {
 .size-117 {
   width: 220px;
   height: 45px;
+}
+.size-270 {
+    width: 270px;
+    height: 45px;
 }
 
 .size-118 {

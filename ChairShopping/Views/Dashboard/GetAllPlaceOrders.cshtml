@@ -58,6 +58,7 @@
                 </tr>
             </thead>
             <tbody class="font-weight-bold">
+                @if (ViewBag.AllPlaceOrders.Coupon.CouponCode == null){ return; }
                 @foreach (var item in ViewBag.AllPlaceOrders)
                 {
                     <tr>
@@ -67,7 +68,17 @@
                         <td>@item.Email</td>
                         <td>@item.Phone</td>
                         <td>@item.OrderNotes</td>
-                        <td>@item.Coupon.CouponCode</td>
+                        <td>
+                            @if (item.Coupon.CouponCode == null)
+                            {
+                                <span>-</span>
+                            }
+                            else
+                            {
+                                <span>@item.Coupon.CouponCode</span>
+
+                            }
+                        </td>
                         <td>
                             <form asp-controller="dashboard" asp-action="DeletePlaceOrder" method="post">
                                 <input type="hidden" name="Id" value="@item.Id" />
