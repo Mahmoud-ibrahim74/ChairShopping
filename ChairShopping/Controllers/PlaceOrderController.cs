@@ -31,6 +31,8 @@ namespace ChairShopping.Controllers
 			{
 				var user = await _UserManager.GetUserAsync(User);
 				ViewBag.user = user;
+				var Total = await _cart.TotalOrderPrice(user.Id);
+				ViewBag.totalOrder = Total;
 			}
 			var orders = await _repo.GetAllOrders();
 			foreach (var order in orders)
@@ -42,12 +44,19 @@ namespace ChairShopping.Controllers
 					{
 						ViewBag.order = orders;
 					}
-					var Total = await _cart.TotalOrderPrice(user.Id);
-					ViewBag.total = Total;
 				}
 			}
 			var coupons = await _repo.GetAllCoupons();
-			if (coupons.Count()==0)
+			foreach (var item in coupons)
+			{
+				if (item.IsExpired == true)
+				{
+					await _repo.DeleteCoupon(item.Id);
+				}
+			}
+			// fake solution ????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			var Allcoupons = await _repo.GetAllCoupons();
+			if (Allcoupons.Count()==0)
 			{
 				ViewBag.c = false;
 			}
@@ -71,7 +80,7 @@ namespace ChairShopping.Controllers
 					}
 					else
 					{
-						ModelState.AddModelError("", "Invalid Coupon");
+						ModelState.AddModelError("", "Coupon Expired or Invalid");
 					}
 				}
 			}

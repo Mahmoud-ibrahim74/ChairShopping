@@ -27,6 +27,7 @@
 								<div class="col-md-6">
 									<label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
 									<input asp-for="LastName" type="text" class="form-control" placeholder="Last Name">
+									<span asp-validation-for="LastName" class="text-danger"></span>
 								</div>
 							</div>
 
@@ -34,6 +35,7 @@
 								<div class="col-md-12">
 									<label for="c_address" class="text-black">Address <span class="text-danger">*</span></label>
 									<input asp-for="Address" type="text" class="form-control" placeholder="Street address">
+									<span asp-validation-for="Address" class="text-danger"></span>
 								</div>
 							</div>
 
@@ -41,11 +43,13 @@
 								<div class="col-md-6">
 									<label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
 									<input asp-for="Email" type="text" class="form-control" placeholder="Email Address">
+									<span asp-validation-for="Email" class="text-danger"></span>
 									@*  value="@ViewBag.user.Email" *@
 								</div>
 								<div class="col-md-6">
 									<label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
 									<input asp-for="Phone" type="text" class="form-control" placeholder="Phone Number">
+									<span asp-validation-for="Phone" class="text-danger"></span>
 								</div>
 							</div>
 
@@ -109,7 +113,7 @@
 											}
 											<tr>
 												<td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-												<td class="text-black font-weight-bold"><strong>$@ViewBag.total</strong></td>
+												<td class="text-black font-weight-bold"><strong>$@ViewBag.totalOrder</strong></td>
 											</tr>
 										</tbody>
 									</table>

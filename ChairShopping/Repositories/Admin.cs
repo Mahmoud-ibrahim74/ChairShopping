@@ -568,5 +568,33 @@ namespace ChairShopping.Repositories
             await _db.SaveChangesAsync();
             return coupon;
         }
-    }
+
+		public async Task<IEnumerable<PlaceOrder>> GetAllPlaceOrders()
+		{
+			return await _db.placeOrders.Include(x=>x.Coupon).ToListAsync();
+		}
+
+		public async Task<PlaceOrder> GetPlaceOrderById(int id)
+		{
+			var placeOrder = await _db.placeOrders.FirstOrDefaultAsync(x => x.Id == id);
+			if (placeOrder == null)
+			{
+				return null;
+			}
+			return placeOrder;
+		}
+		public async Task<PlaceOrder> DeletePlaceOrder(int id)
+		{
+			var placeOrder = await GetPlaceOrderById(id);
+			if (placeOrder == null)
+			{
+				return null;
+			}
+			_db.placeOrders.Remove(placeOrder);
+			await _db.SaveChangesAsync();
+			return placeOrder;
+		}
+        ///////////////////////////////////////////////////////////////////////////////
+        
+	}
 }

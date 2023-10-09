@@ -566,18 +566,6 @@ namespace ChairShopping.Controllers
             await _repo.EditCoupon(model, id);
             return RedirectToAction("GetAllCoupons", "Dashboard");
         }
-        //public async Task<ActionResult<Coupon>> DeleteCoupon(int id)
-        //{
-        //    if (id > 0)
-        //    {
-        //        var coupon = await _repo.GetCouponsById(id);
-        //        if (coupon != null)
-        //        {
-        //            ViewBag.Deletecoupon = coupon;
-        //        }
-        //    }
-        //    return View();
-        //}
         [HttpPost]
         public async Task<ActionResult<Coupon>> DeleteCoupon(int id, Coupon model)
         {
@@ -596,6 +584,18 @@ namespace ChairShopping.Controllers
             }
             return View();
         }
-    }
+		////////////////////////////////////////////////////////////////////////////////
+		public async Task<IActionResult> GetAllPlaceOrders()
+		{
+			ViewBag.AllPlaceOrders = await _repo.GetAllPlaceOrders();
+			return View();
+		}
+		[HttpPost]
+		public async Task<ActionResult<PlaceOrder>> DeletePlaceOrder(int id, PlaceOrder model)
+		{
+			await _repo.DeletePlaceOrder(id);
+			return RedirectToAction("GetAllPlaceOrders", "Dashboard");
+		}
+	}
 }
 
