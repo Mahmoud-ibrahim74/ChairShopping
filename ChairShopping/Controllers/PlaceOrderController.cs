@@ -15,15 +15,17 @@ namespace ChairShopping.Controllers
 		private readonly ICart _cart;
 		private readonly AppDbContext _db;
 		private readonly IAdmin _repo;
+        private readonly IEmailService _emailService;
 
-		public PlaceOrderController(ICart cart,AppDbContext db,IAdmin repo, SignInManager<ApplicationUser> SignInManager, UserManager<ApplicationUser> UserManager)
+        public PlaceOrderController(IEmailService emailService,ICart cart,AppDbContext db,IAdmin repo, SignInManager<ApplicationUser> SignInManager, UserManager<ApplicationUser> UserManager)
         {
             _db = db;
             _repo = repo;
             _SignInManager = SignInManager;
             _UserManager = UserManager;
             _cart = cart;
-		}
+            _emailService = emailService;
+        }
 		[HttpGet]
         public async Task<IActionResult> PlaceOrder()
         {
@@ -96,6 +98,10 @@ namespace ChairShopping.Controllers
                     OrderNotes = model.OrderNotes,
                     Phone = model.Phone
                 };
+                var emailSubject = "Your Order From FurnitureWebsite";
+                var emailBody = $"you orderd from FurnitureWebsite and we will come soon , follow us";
+                var address = $"{model.Email}";
+                await _emailService.SendEmailAsync(model.Email, address, emailSubject, emailBody);
                 await _db.placeOrders.AddAsync(orderPlace);
                 await _db.SaveChangesAsync();
 				if (_SignInManager.IsSignedIn(User))
@@ -111,7 +117,7 @@ namespace ChairShopping.Controllers
 						}
 					}
 				}
-				return RedirectToAction("ConfirmOrder");
+                return RedirectToAction("ConfirmOrder");
 			}
             return View(model);
         }

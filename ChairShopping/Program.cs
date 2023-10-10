@@ -1,6 +1,7 @@
 using ChairShopping.Data;
 using ChairShopping.Interfaces;
 using ChairShopping.Repositories;
+using ChairShopping.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 #region Interfaces and repo 
 builder.Services.AddScoped<IAdmin, Admin>();
 builder.Services.AddScoped<ICart, Cart>();
-
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
 #endregion
 var app = builder.Build();
 

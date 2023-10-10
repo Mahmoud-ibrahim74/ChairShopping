@@ -117,33 +117,33 @@ namespace ChairShopping.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPassword)
 		{
-			if (ModelState.IsValid)
-			{
-				var user = await _userManager.FindByEmailAsync(forgetPassword.Email);
-				if (user != null)
-				{
-					var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-					var callbackUrl = Url.Action("ResetPassword", "Account",
-						new { userId = user.Id, token = token }, Request.Scheme);
+			//if (ModelState.IsValid)
+			//{
+			//	var user = await _userManager.FindByEmailAsync(forgetPassword.Email);
+			//	if (user != null)
+			//	{
+			//		var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+			//		var callbackUrl = Url.Action("ResetPassword", "Account",
+			//			new { userId = user.Id, token = token }, Request.Scheme);
 
-					// Send the password reset link to the user's email
-					// You can use any email sending mechanism here
-					IEmailSender _emailSender = new GmailEmailSender();
-					await _emailSender.SendEmailAsync(forgetPassword.Email, "Reset Password",
-						$"Please reset your password by clicking <a href='{callbackUrl}'>here</a>.");
+			//		// Send the password reset link to the user's email
+			//		// You can use any email sending mechanism here
+			//		IEmailService _emailSender = new GmailEmailSender();
+			//		await _emailSender.SendEmailAsync(forgetPassword.Email, "Reset Password",
+			//			$"Please reset your password by clicking <a href='{callbackUrl}'>here</a>.");
 
-					return RedirectToAction("ForgotPasswordConfirmation");
-				}
-				else
-				{
-					ModelState.AddModelError(string.Empty, "Email doesn't  Exist !!");
-				}
-                    return RedirectToAction("ForgotPasswordConfirmation");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Email doesn't  Exist !!");
-                }
+			//		return RedirectToAction("ForgotPasswordConfirmation");
+			//	}
+			//	else
+			//	{
+			//		ModelState.AddModelError(string.Empty, "Email doesn't  Exist !!");
+			//	}
+   //                 return RedirectToAction("ForgotPasswordConfirmation");
+   //             }
+   //             else
+   //             {
+   //                 ModelState.AddModelError(string.Empty, "Email doesn't  Exist !!");
+   //             }
             
 
 			// If we got this far, something failed, redisplay the form

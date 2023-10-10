@@ -213,6 +213,27 @@
     });
 
     /*==================================================================
+        /*==================================================================
+    [ Favourite ]*/
+    $('.js-show-favourite').on('click', function () {
+        $('.js-panel-favourite').addClass('show-header-favourite');
+    });
+
+    $('.js-hide-favourite').on('click', function () {
+        $('.js-panel-favourite').removeClass('show-header-favourite');
+    });
+
+    /*==================================================================
+    [ Favourite ]*/
+    $('.js-show-sidebar').on('click', function () {
+        $('.js-sidebar').addClass('show-sidebar');
+    });
+
+    $('.js-hide-sidebar').on('click', function () {
+        $('.js-sidebar').removeClass('show-sidebar');
+    });
+
+    /*==================================================================
     [ +/- num product ]*/
     $('.btn-num-product-down').on('click', function(){
         var numProduct = Number($(this).next().val());

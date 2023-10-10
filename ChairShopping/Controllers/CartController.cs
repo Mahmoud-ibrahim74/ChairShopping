@@ -3,7 +3,9 @@ using ChairShopping.Interfaces;
 using ChairShopping.Migrations;
 using ChairShopping.Models;
 using ChairShopping.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChairShopping.Controllers
@@ -13,12 +15,14 @@ namespace ChairShopping.Controllers
 		private readonly ICart _cart;
 		private readonly IAdmin _repo;
         private readonly AppDbContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(ICart cart,IAdmin repo, AppDbContext db)
+        public CartController(ICart cart,IAdmin repo, AppDbContext db,UserManager<ApplicationUser> userManager)
         {
             _cart = cart;
             _repo=repo;
             _db = db;
+           _userManager = userManager;
         }
         public async Task<IActionResult> GetCartById(string Id)
         {
@@ -65,21 +69,46 @@ namespace ChairShopping.Controllers
         [HttpGet]
         public async Task<ActionResult<Order>> AddToCart(OrderViewModel model)
         {
-            ////fake solution
-            //var products = await _repo.GetAllProducts();
-            ////var orders = await _repo.GetAllOrders();
-            //foreach (var item in products)
-            //{
-            //    if (model.ProductId == item.Id)
-            //    {
-            //        ViewBag.order = model;
-            //        break;
-            //    }
-            //}
             var order =  await _cart.AddToCart(model);
             ViewBag.UserId = order.UserId;
             TempData["cart_added"] = "Product Added Sucessfully";
             return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public async Task<ActionResult<Order>> UpdateCart(int id)
+        {
+            var Subproducts = await _repo.GetAllProducts();
+            var subUsers = await _repo.GetAllUsers();
+            var model = new OrderViewModel
+            {
+                productList = Subproducts.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.ProductName
+                }).ToList(),
+                userList = subUsers.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.UserName
+                }).ToList()
+            };
+            if (id > 0)
+            {
+                var order = await _repo.GetOrderById(id);
+                if (order != null)
+                {
+                    ViewBag.Updateorder = order;
+                }
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult<Order>> UpdateCart(OrderViewModel model, int id)
+        {
+            var order = await _repo.GetOrderById(id);
+            ViewBag.UserId = order.UserId;
+            await _repo.EditOrder(model, id);
+            return RedirectToAction("GetCartById", "Cart", new { Id = ViewBag.UserId });
         }
     }
 }

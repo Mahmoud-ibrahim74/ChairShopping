@@ -64,5 +64,24 @@ namespace ChairShopping.Repositories
 			}
 			return TotalPrice;
 		}
-	}
+
+        public async Task<Order> UpdateCart(int id, OrderViewModel model)
+        {
+			var order = await _repo.GetOrderById(id);
+			if (order==null)
+			{
+				return null;
+			}
+			order.TotalPrice = model.TotalPrice;
+		    order.Price = model.Price;
+			order.OrderDate = DateTime.Now;
+			order.Quantity = model.Quantity;
+			order.Discount = model.Discount;
+			order.UserId = model.UserId;
+			order.ProductId = model.ProductId;
+			_db.orders.Update(order);
+			await _db.SaveChangesAsync();
+			return order;
+        }
+    }
 }
