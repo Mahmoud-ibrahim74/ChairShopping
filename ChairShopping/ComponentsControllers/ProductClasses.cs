@@ -1,6 +1,7 @@
-﻿using ChairShopping.Interfaces;
+﻿using ChairShopping.Data;
+using ChairShopping.Interfaces;
+using ChairShopping.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace ChairShopping.ComponentsControllers
 {
@@ -12,11 +13,21 @@ namespace ChairShopping.ComponentsControllers
         {
             this._productClasses = productClasses;
         }
-        public async Task<IViewComponentResult> InvokeAsync(int categ_id)
+        public async Task<IViewComponentResult> InvokeAsync(int categ_id,int PageNumber = 1,int PageSize = 8)
         {
 
             if (categ_id == 0)  // this condition to load all categories when page is load
-                return View("Index", await _productClasses.GetProductsLimitAsync(10));  // view 10 products to prevent load on server
+            {
+                var pagedData = await _productClasses.ProductPagingAsync(PageNumber, PageSize);
+                var model = new PagedList<Product>
+                {
+                    Items = pagedData,
+                    PageIndex = PageNumber,
+                    PageSize = PageSize,
+                    TotalCount = pagedData.Count
+                };
+                return View("Index", model);
+            }
             else
             {
                 return View("Index", await _productClasses.GetProductsByCatgoryIdAsync(categ_id));

@@ -595,19 +595,19 @@ namespace ChairShopping.Repositories
 			return placeOrder;
 		}
 
-        public async Task<IEnumerable<Favourite>> GetAllFavourits()
+        public Task<List<Product>> ProductPagingAsync(int pageNumber, int pageSize)
         {
-            return await _db.favourites.Include(x=>x.User).Include(x=>x.Product).ToListAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<Favourite> GetFavouriteById(int id)
+        public Task<IEnumerable<Favourite>> GetAllFavourits()
         {
-            var favourite = await _db.favourites.FirstOrDefaultAsync(x => x.Id == id);
-            if (favourite == null)
-            {
-                return null;
-            }
-            return favourite;
+            throw new NotImplementedException();
+        }
+
+        public Task<Favourite> GetFavouriteById(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<Favourite> AddFavourite(FavouriteViewModel model)
