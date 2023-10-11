@@ -50,6 +50,9 @@ builder.Services.AddScoped<ICart, Cart>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IEmailService, EmailService>();
 #endregion
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

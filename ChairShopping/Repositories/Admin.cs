@@ -594,7 +594,12 @@ namespace ChairShopping.Repositories
 			await _db.SaveChangesAsync();
 			return placeOrder;
 		}
+
+        public async Task<List<Product>> ProductPagingAsync(int pageNumber, int pageSize)
+        {
+            return await _db.products.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        }
         ///////////////////////////////////////////////////////////////////////////////
-        
-	}
+
+    }
 }

@@ -357,6 +357,7 @@ namespace ChairShopping.Controllers
             if (ModelState.IsValid)
             {
                 await _repo.AddProduct(model);
+                TempData["ProductAdded"] = "Product Added Sucessfully";
                 return RedirectToAction("GetAllProducts");
             }
             else

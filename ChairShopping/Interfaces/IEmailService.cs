@@ -31,6 +31,7 @@ namespace ChairShopping.Interfaces
             };
 
             using var client = new SmtpClient();
+            
             await client.ConnectAsync(_emailSettings.SmtpServer, _emailSettings.Port, SecureSocketOptions.Auto).ConfigureAwait(false);
             await client.AuthenticateAsync(_emailSettings.UserName, _emailSettings.Password).ConfigureAwait(false);
             await client.SendAsync(message).ConfigureAwait(false);
