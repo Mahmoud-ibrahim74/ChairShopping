@@ -506,7 +506,7 @@ namespace ChairShopping.Repositories
             return coupon;
         }
 
-        public async Task<Coupon> AddCoupon(FavouriteViewModel model)
+        public async Task<Coupon> AddCoupon(CouponViewModel model)
         {
             if (model == null)
             {
@@ -531,7 +531,7 @@ namespace ChairShopping.Repositories
             return coupon;
         }
 
-        public async Task<Coupon> EditCoupon(FavouriteViewModel model, int id)
+        public async Task<Coupon> EditCoupon(CouponViewModel model, int id)
         {
             if (id < 0 && model == null)
             {
@@ -594,35 +594,67 @@ namespace ChairShopping.Repositories
 			await _db.SaveChangesAsync();
 			return placeOrder;
 		}
-
-        public Task<List<Product>> ProductPagingAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<Favourite>> GetAllFavourits()
         {
-            throw new NotImplementedException();
+            return await _db.favourites.Include(x => x.User).Include(x => x.Product).ToListAsync();
         }
 
-        public Task<IEnumerable<Favourite>> GetAllFavourits()
+        public async Task<Favourite> GetFavouriteById(int id)
         {
-            throw new NotImplementedException();
+            var favourite = await _db.favourites.FirstOrDefaultAsync(x => x.Id == id);
+            if (favourite == null)
+            {
+                return null;
+            }
+            return favourite;
         }
 
-        public Task<Favourite> GetFavouriteById(int id)
+        public async Task<Favourite> AddFavourite(FavouritsViewModel model)
         {
-            throw new NotImplementedException();
+            if (model == null)
+            {
+                return null;
+            }
+            var favourite = new Favourite
+            {
+                IsFavourite = model.IsFavourite,
+                ProductId = model.ProductId,
+                UserId = model.UserId               
+            };
+            await _db.favourites.AddAsync(favourite);
+            await _db.SaveChangesAsync();
+            return favourite;
         }
 
-        public Task<Favourite> AddFavourite(FavouriteViewModel model)
+        public async Task<Favourite> EditFavourite(FavouritsViewModel model, int id)
         {
-            throw new NotImplementedException();
+            if (id < 0 && model == null)
+            {
+                return null;
+            }
+            var favourite = await GetFavouriteById(id);
+            if (favourite == null)
+            {
+                return null;
+            }
+            favourite.IsFavourite = model.IsFavourite;
+            favourite.ProductId = model.ProductId;
+            favourite.UserId = model.UserId;
+            _db.favourites.Update(favourite);
+            await _db.SaveChangesAsync();
+            return favourite;
         }
 
-        public Task<Favourite> EditFavourite(FavouriteViewModel model, int id)
+        public async Task<Favourite> DeleteFavourite(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Favourite> DeleteFavourite(int id)
-        {
-            throw new NotImplementedException();
+            var favourite = await GetFavouriteById(id);
+            if (favourite == null)
+            {
+                return null;
+            }
+            _db.favourites.Remove(favourite);
+            await _db.SaveChangesAsync();
+            return favourite;
         }
         ///////////////////////////////////////////////////////////////////////////////
 

@@ -1,4 +1,4 @@
-﻿@model CouponViewModel
+﻿@model FavouritsViewModel
 @{
     Layout = null;
 }
@@ -24,13 +24,37 @@
     <link href="~/css/responsive.css" rel="stylesheet" />
 </head>
 <div asp-validation-summary="All" class="text-danger"></div>
-<form class="m-3" asp-action="AddCoupon" asp-controller="dashboard" method="post">
+<form class="m-3" asp-action="AddFavourits" asp-controller="dashboard" method="post">
     <div class="form-group">
-        <label for="exampleInputEmail1">Category Name</label>
-        <input type="date" class="form-control" asp-for="ExpireDate" placeholder="Enter ExpireDate">
+        <label for="UserId">User Name:</label>
+        <select id="UserId" name="UserId" class="form-control">
+            <option value="">-- Select User --</option>
+            @foreach (var user in Model.userList)
+            {
+                <option value="@user.Value">@user.Text</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="ProductId">Product Name:</label>
+        <select id="ProductId" name="ProductId" class="form-control">
+            <option value="">-- Select Product --</option>
+            @foreach (var Product in Model.productList)
+            {
+                <option value="@Product.Value">@Product.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-8">
+        <div class="icheck-primary">
+            <input type="checkbox" asp-for="IsFavourite">
+            <label asp-for="IsFavourite">
+                IsFavourite
+            </label>
+        </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
-    <a class="btn btn-success" asp-controller="dashboard" asp-action="GetAllCoupons">Back</a>
+    <a class="btn btn-success" asp-controller="dashboard" asp-action="GetAllFavourits">Back</a>
     <script src="~/js/jquery-3.3.1.min.js"></script>
     <!-- popper js -->
     <script src="~/js/popper.min.js"></script>
@@ -39,3 +63,4 @@
     <!-- custom js -->
     <script src="~/js/custom.js"></script>
 </form>
+

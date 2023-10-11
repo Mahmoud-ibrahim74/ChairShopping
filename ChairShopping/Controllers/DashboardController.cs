@@ -24,9 +24,9 @@ namespace ChairShopping.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var orders =await _repo.GetAllOrders();
-            var products =await _repo.GetAllProducts();
-            var categories=await _repo.GetAllCategories();
+            var orders = await _repo.GetAllOrders();
+            var products = await _repo.GetAllProducts();
+            var categories = await _repo.GetAllCategories();
             var users = await _repo.GetAllUsers();
             var coupons = await _repo.GetAllCoupons();
             var model = new DashboardViewModel
@@ -35,7 +35,7 @@ namespace ChairShopping.Controllers
                 Order = orders,
                 Product = products,
                 Users = users,
-                Coupons = coupons        
+                Coupons = coupons
             };
             return View(model);
         }
@@ -177,7 +177,7 @@ namespace ChairShopping.Controllers
             }
             return View();
         }
-        
+
         public async Task<ActionResult<IEnumerable<UserRoleViewModel>>> UserRoles()
         {
             var userRoles = await _repo.GetAllUserRole();
@@ -260,7 +260,7 @@ namespace ChairShopping.Controllers
             await _repo.DeleteUserRole(model);
             return RedirectToAction("UserRoles");
         }
-        
+
         public async Task<IActionResult> GetAllCategories()
         {
             ViewBag.AllCategories = await _repo.GetAllCategories();
@@ -343,7 +343,7 @@ namespace ChairShopping.Controllers
             var Subproducts = await _repo.GetAllCategories();
             var model = new ProductViewModel
             {
-                categoriesList= Subproducts.Select(c => new SelectListItem
+                categoriesList = Subproducts.Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
                     Text = c.CategoryName
@@ -531,12 +531,12 @@ namespace ChairShopping.Controllers
             ViewBag.AllCoupons = await _repo.GetAllCoupons();
             return View();
         }
-        public  IActionResult AddCoupon()
+        public IActionResult AddCoupon()
         {
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult<Coupon>> AddCoupon(FavouriteViewModel model)
+        public async Task<ActionResult<Coupon>> AddCoupon(CouponViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -562,7 +562,7 @@ namespace ChairShopping.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult<Coupon>> EditCoupon(FavouriteViewModel model, int id)
+        public async Task<ActionResult<Coupon>> EditCoupon(CouponViewModel model, int id)
         {
             await _repo.EditCoupon(model, id);
             return RedirectToAction("GetAllCoupons", "Dashboard");
@@ -585,18 +585,108 @@ namespace ChairShopping.Controllers
             }
             return View();
         }
-		////////////////////////////////////////////////////////////////////////////////
-		public async Task<IActionResult> GetAllPlaceOrders()
-		{
-			ViewBag.AllPlaceOrders = await _repo.GetAllPlaceOrders();
-			return View();
-		}
-		[HttpPost]
-		public async Task<ActionResult<PlaceOrder>> DeletePlaceOrder(int id, PlaceOrder model)
-		{
-			await _repo.DeletePlaceOrder(id);
-			return RedirectToAction("GetAllPlaceOrders", "Dashboard");
-		}
-	}
+        ////////////////////////////////////////////////////////////////////////////////
+        public async Task<IActionResult> GetAllPlaceOrders()
+        {
+            ViewBag.AllPlaceOrders = await _repo.GetAllPlaceOrders();
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult<PlaceOrder>> DeletePlaceOrder(int id, PlaceOrder model)
+        {
+            await _repo.DeletePlaceOrder(id);
+            return RedirectToAction("GetAllPlaceOrders", "Dashboard");
+        }
+        ////////////////////////////////////////////////////////////////////////////////////
+        public async Task<IActionResult> GetAllFavourits()
+        {
+            ViewBag.AllFavourits = await _repo.GetAllFavourits();
+            return View();
+        }
+        public async Task<IActionResult> AddFavourits()
+        {
+            var Subproducts = await _repo.GetAllProducts();
+            var subUsers = await _repo.GetAllUsers();
+            var model = new FavouritsViewModel
+            {
+                productList = Subproducts.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.ProductName
+                }).ToList(),
+                userList = subUsers.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.UserName
+                }).ToList()
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult<Favourite>> AddFavourits(FavouritsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _repo.AddFavourite(model);
+                return RedirectToAction("GetAllFavourits");
+            }
+            else
+            {
+                ModelState.AddModelError("Key", "something wrong in validation");
+            }
+            return View();
+        }
+        public async Task<ActionResult<Favourite>> EditFavourits(int id)
+        {
+            var Subproducts = await _repo.GetAllProducts();
+            var subUsers = await _repo.GetAllUsers();
+            var model = new FavouritsViewModel
+            {
+                productList = Subproducts.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.ProductName
+                }).ToList(),
+                userList = subUsers.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.UserName
+                }).ToList()
+            };
+            if (id > 0)
+            {
+                var favourite = await _repo.GetFavouriteById(id);
+                if (favourite != null)
+                {
+                    ViewBag.Updatefavourite = favourite;
+                }
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult<Favourite>> EditFavourits(FavouritsViewModel model, int id)
+        {
+            await _repo.EditFavourite(model, id);
+            return RedirectToAction("GetAllFavourits", "Dashboard");
+        }
+        [HttpPost]
+        public async Task<ActionResult<Favourite>> DeleteFavourite(int id, Favourite model)
+        {
+            await _repo.DeleteFavourite(id);
+            return RedirectToAction("GetAllFavourits", "Dashboard");
+        }
+        public async Task<ActionResult<Favourite>> GetFavouriteDetails(int id)
+        {
+            if (id > 0)
+            {
+                var Favourite = await _repo.GetFavouriteById(id);
+                if (Favourite != null)
+                {
+                    ViewBag.FavouriteDetail = Favourite;
+                }
+            }
+            return View();
+        }
+    }
 }
 

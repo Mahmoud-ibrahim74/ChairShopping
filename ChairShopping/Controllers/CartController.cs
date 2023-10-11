@@ -66,7 +66,7 @@ namespace ChairShopping.Controllers
             await _cart.RemoveFromCart(id);
             return RedirectToAction("GetCartById","Cart",new {Id = ViewBag.UserId });
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult<Order>> AddToCart(OrderViewModel model)
         {
             var order =  await _cart.AddToCart(model);
@@ -109,6 +109,14 @@ namespace ChairShopping.Controllers
             ViewBag.UserId = order.UserId;
             await _repo.EditOrder(model, id);
             return RedirectToAction("GetCartById", "Cart", new { Id = ViewBag.UserId });
+        }
+        [HttpPost]
+        public async Task<ActionResult<Favourite>> AddFavourites(FavouritsViewModel model)
+        {
+            var favourite = await _cart.AddToFavourite(model);
+            ViewBag.UserId = favourite.UserId;
+            TempData["cart_added"] = "Product Favourite Added Sucessfully";
+            return RedirectToAction("Index", "Home");
         }
     }
 }

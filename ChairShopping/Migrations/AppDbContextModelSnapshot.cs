@@ -136,7 +136,7 @@ namespace ChairShopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("categories", (string)null);
+                    b.ToTable("categories");
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Coupon", b =>
@@ -147,8 +147,8 @@ namespace ChairShopping.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CouponCode")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CouponCode")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
@@ -158,7 +158,33 @@ namespace ChairShopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("coupons", (string)null);
+                    b.ToTable("coupons");
+                });
+
+            modelBuilder.Entity("ChairShopping.Models.Favourite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsFavourite")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("favourites");
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Order", b =>
@@ -196,7 +222,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("orders", (string)null);
+                    b.ToTable("orders");
                 });
 
             modelBuilder.Entity("ChairShopping.Models.PlaceOrder", b =>
@@ -210,7 +236,7 @@ namespace ChairShopping.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CouponId")
+                    b.Property<int?>("CouponId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -232,7 +258,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("CouponId");
 
-                    b.ToTable("placeOrders", (string)null);
+                    b.ToTable("placeOrders");
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Product", b =>
@@ -268,7 +294,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("products", (string)null);
+                    b.ToTable("products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -377,6 +403,23 @@ namespace ChairShopping.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ChairShopping.Models.Favourite", b =>
+                {
+                    b.HasOne("ChairShopping.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChairShopping.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ChairShopping.Models.Order", b =>
                 {
                     b.HasOne("ChairShopping.Models.Product", "Product")
@@ -398,9 +441,7 @@ namespace ChairShopping.Migrations
                 {
                     b.HasOne("ChairShopping.Models.Coupon", "Coupon")
                         .WithMany()
-                        .HasForeignKey("CouponId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CouponId");
 
                     b.Navigation("Coupon");
                 });

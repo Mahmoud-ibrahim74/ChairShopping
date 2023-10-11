@@ -29,7 +29,17 @@ namespace ChairShopping.Repositories
 			return order;
 		}
 
-		public async Task<IEnumerable<Order>> GetAllCarts()
+        public async Task<Favourite> AddToFavourite(FavouritsViewModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            var favourite = await _repo.AddFavourite(model);
+            return favourite;
+        }
+
+        public async Task<IEnumerable<Order>> GetAllCarts()
 		{
 			var orders= await _db.orders.Include(x => x.Product).Include(x => x.User).ToListAsync();
 			return orders;
@@ -43,7 +53,18 @@ namespace ChairShopping.Repositories
 			List<Order> orders = await _db.orders.Where(x => x.UserId == id).Include(x => x.Product).Include(x => x.User).ToListAsync();
 			return orders;
 		}
-		public async Task<Order> RemoveFromCart(int id)
+
+        public async Task<List<Favourite>> GetFavouriteById(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return null;
+            }
+            List<Favourite> favourites = await _db.favourites.Where(x => x.UserId == id).Include(x => x.Product).Include(x => x.User).ToListAsync();
+            return favourites;
+        }
+
+        public async Task<Order> RemoveFromCart(int id)
 		{
 			var order = await _repo.GetOrderById(id);
 			if (order == null)

@@ -1,6 +1,6 @@
 ﻿namespace ChairShopping.ViewModel
 {
-    public class FavouriteViewModel
+    public class CouponViewModel
     {
         public Guid CouponCode { get; set; } = Guid.NewGuid();
         public DateTime ExpireDate { get; set; }
