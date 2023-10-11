@@ -506,7 +506,7 @@ namespace ChairShopping.Repositories
             return coupon;
         }
 
-        public async Task<Coupon> AddCoupon(CouponViewModel model)
+        public async Task<Coupon> AddCoupon(FavouriteViewModel model)
         {
             if (model == null)
             {
@@ -531,7 +531,7 @@ namespace ChairShopping.Repositories
             return coupon;
         }
 
-        public async Task<Coupon> EditCoupon(CouponViewModel model, int id)
+        public async Task<Coupon> EditCoupon(FavouriteViewModel model, int id)
         {
             if (id < 0 && model == null)
             {
@@ -594,7 +594,37 @@ namespace ChairShopping.Repositories
 			await _db.SaveChangesAsync();
 			return placeOrder;
 		}
+
+        public async Task<IEnumerable<Favourite>> GetAllFavourits()
+        {
+            return await _db.favourites.Include(x=>x.User).Include(x=>x.Product).ToListAsync();
+        }
+
+        public async Task<Favourite> GetFavouriteById(int id)
+        {
+            var favourite = await _db.favourites.FirstOrDefaultAsync(x => x.Id == id);
+            if (favourite == null)
+            {
+                return null;
+            }
+            return favourite;
+        }
+
+        public Task<Favourite> AddFavourite(FavouriteViewModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Favourite> EditFavourite(FavouriteViewModel model, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Favourite> DeleteFavourite(int id)
+        {
+            throw new NotImplementedException();
+        }
         ///////////////////////////////////////////////////////////////////////////////
-        
-	}
+
+    }
 }

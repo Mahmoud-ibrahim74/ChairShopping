@@ -535,7 +535,7 @@ namespace ChairShopping.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult<Coupon>> AddCoupon(CouponViewModel model)
+        public async Task<ActionResult<Coupon>> AddCoupon(FavouriteViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -561,7 +561,7 @@ namespace ChairShopping.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult<Coupon>> EditCoupon(CouponViewModel model, int id)
+        public async Task<ActionResult<Coupon>> EditCoupon(FavouriteViewModel model, int id)
         {
             await _repo.EditCoupon(model, id);
             return RedirectToAction("GetAllCoupons", "Dashboard");

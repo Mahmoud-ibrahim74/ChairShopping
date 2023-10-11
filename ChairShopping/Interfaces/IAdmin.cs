@@ -49,12 +49,19 @@ namespace ChairShopping.Interfaces
         ///////////////////////////////////////////////////////////////////////////////
         public Task<IEnumerable<Coupon>> GetAllCoupons();
         public Task<Coupon> GetCouponsById(int id);
-        public Task<Coupon> AddCoupon(CouponViewModel model);
-        public Task<Coupon> EditCoupon(CouponViewModel model, int id);
+        public Task<Coupon> AddCoupon(FavouriteViewModel model);
+        public Task<Coupon> EditCoupon(FavouriteViewModel model, int id);
         public Task<Coupon> DeleteCoupon(int id);
 		////////////////////////////////////////////////////////////////////////////////
 		public Task<IEnumerable<PlaceOrder>> GetAllPlaceOrders();
 		public Task<PlaceOrder> GetPlaceOrderById(int id);
 		public Task<PlaceOrder> DeletePlaceOrder(int id);
-	}
+        //add placeorder and edit placeorder ??!!!!?!?!?!?!? ////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        public Task<IEnumerable<Favourite>> GetAllFavourits();
+        public Task<Favourite> GetFavouriteById(int id);
+        public Task<Favourite> AddFavourite(FavouriteViewModel model);
+        public Task<Favourite> EditFavourite(FavouriteViewModel model, int id);
+        public Task<Favourite> DeleteFavourite(int id);
+    }
 }
