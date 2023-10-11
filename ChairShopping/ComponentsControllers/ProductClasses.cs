@@ -18,15 +18,8 @@ namespace ChairShopping.ComponentsControllers
 
             if (categ_id == 0)  // this condition to load all categories when page is load
             {
-                var pagedData = await _productClasses.ProductPagingAsync(PageNumber, PageSize);
-                var model = new PagedList<Product>
-                {
-                    Items = pagedData,
-                    PageIndex = PageNumber,
-                    PageSize = PageSize,
-                    TotalCount = pagedData.Count
-                };
-                return View("Index", model);
+                return View("Index", await _productClasses.GetProductsLimitAsync(10));  // view 10 products to prevent load on server
+
             }
             else
             {
