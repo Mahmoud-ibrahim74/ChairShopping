@@ -29,13 +29,17 @@ namespace ChairShopping.Controllers
             var categories = await _repo.GetAllCategories();
             var users = await _repo.GetAllUsers();
             var coupons = await _repo.GetAllCoupons();
+            var placeOrder = await _repo.GetAllPlaceOrders();
+            var fav = await _repo.GetAllFavourits();
             var model = new DashboardViewModel
             {
                 Category = categories,
                 Order = orders,
                 Product = products,
                 Users = users,
-                Coupons = coupons
+                Coupons = coupons,
+                PlaceOrders = placeOrder,
+                Favourites = fav
             };
             return View(model);
         }

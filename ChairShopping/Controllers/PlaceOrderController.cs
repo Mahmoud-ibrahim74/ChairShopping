@@ -36,7 +36,7 @@ namespace ChairShopping.Controllers
 				var Total = await _cart.TotalOrderPrice(user.Id);
 				ViewBag.totalOrder = Total;
 			}
-			var orders = await _repo.GetAllOrders();
+			var orders = await _cart.GetCartById(_UserManager.GetUserId(User));
 			foreach (var order in orders)
 			{
 				if (_SignInManager.IsSignedIn(User))

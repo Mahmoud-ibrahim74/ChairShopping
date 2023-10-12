@@ -4,7 +4,9 @@
 @inject UserManager<ApplicationUser> _UserManager;
 @model PlaceOrderViewModel;
 @{
-    Layout = "CssScripts";
+	Layout = "CssScripts";
+	ApplicationUser user =await _UserManager.GetUserAsync(User);
+	var email = user.Email;
 }
 <head>
 	<title>Place Order</title>
@@ -45,9 +47,8 @@
 							<div class="form-group row mb-5">
 								<div class="col-md-6">
 									<label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
-									<input asp-for="Email" type="text" class="form-control" placeholder="Email Address">
+									<input asp-for="Email" type="text" class="form-control" placeholder="Email Address" value="@email">
 									<span asp-validation-for="Email" class="text-danger"></span>
-									@*  value="@ViewBag.user.Email" *@
 								</div>
 								<div class="col-md-6">
 									<label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
@@ -64,7 +65,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						@if (ViewBag.c == true || ViewBag.c==null)
+						@if (ViewBag.c == true)
 						{
 							<div class="row mb-5">
 								<div class="col-md-12">
@@ -86,7 +87,7 @@
 								</div>
 							</div>
 						}
-						@if (ViewBag.c == false)
+						@if (ViewBag.c == false || ViewBag.c == null)
 						{
 								<div class="alert alert-danger alert-dismissible fade show" role="alert">
 									<strong>No Coupon Today!!!!!</strong>
