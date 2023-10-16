@@ -15,5 +15,6 @@ namespace ChairShopping.ViewModel
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
         public List<SelectListItem> categoriesList { get; set; }
+        public string Search { get; set; }
     }
 }

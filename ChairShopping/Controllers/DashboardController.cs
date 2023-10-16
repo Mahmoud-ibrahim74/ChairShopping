@@ -268,7 +268,13 @@ namespace ChairShopping.Controllers
         public async Task<IActionResult> GetAllCategories()
         {
             ViewBag.AllCategories = await _repo.GetAllCategories();
-            return View();
+            return View(await _repo.GetCategoryInSinglePage(1));
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetAllCategories(int currentPageIndex)
+        {
+            ViewBag.AllCategories = await _repo.GetAllCategories();
+            return View(await _repo.GetCategoryInSinglePage(currentPageIndex));
         }
         public IActionResult AddCategory()
         {

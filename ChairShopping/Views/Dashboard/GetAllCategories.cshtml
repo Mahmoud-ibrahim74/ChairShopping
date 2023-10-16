@@ -1,6 +1,8 @@
-﻿@{
-    Layout = null;
+﻿@model CategoriesViewModel;
+@{
+    Layout = "CssScripts";
 }
+
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -43,8 +45,8 @@
 
 <section class="content">
     <div class="container-fluid">
-
-        <table class="table table-hover table-striped table-bordered text-center">
+        <form asp-action="GetAllCategories" asp-controller="dashboard" method="post">
+            <table cellpadding="0" cellspacing="0" class="table table-hover table-striped table-bordered text-center">
             <thead class="thead-dark">
                 <tr>
                     <th>Category Id</th>
@@ -52,7 +54,7 @@
                 </tr>
             </thead>
             <tbody class="font-weight-bold">
-                @foreach (var item in ViewBag.AllCategories)
+                @foreach (var item in Model.categories)
                 {
                     <tr>
                         <td>@item.Id</td>
@@ -64,11 +66,38 @@
                 }
             </tbody>
         </table>
+        <br />
+            <table cellpadding="0" cellspacing="0" aria-label="Page navigation example">
+                <tr class="pagination">
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                       @*  style = "color:black;float:left;padding:8px 16px;text-decoration:none;transition:background-color .3s;" *@
+                        <td class="page-item">
+                            @if (i != Model.CurrentPageIndex)
+                            {
+                                <a class="page-link" href="javascript:PagerClick(@i);">@i</a>
+                            }
+                            else
+                            {
+                                <span>@i</span>
+                            }
+                        </td>
+                    }
+                </tr>
+            </table>
+            <input type="hidden" id="hfCurrentPageIndex" name="currentPageIndex" />
+        </form>
         <a class="btn btn-success" asp-controller="dashboard" asp-action="index">Back</a>
 
         <br />
         Products count : @ViewBag.AllCategories.Count
     </div>
+    <script type="text/javascript">
+        function PagerClick(index) {
+            document.getElementById("hfCurrentPageIndex").value = index;
+            document.forms[0].submit();
+        }
+    </script>
     <script src="~/js/jquery-3.3.1.min.js"></script>
     <!-- popper js -->
     <script src="~/js/popper.min.js"></script>
@@ -77,5 +106,3 @@
     <!-- custom js -->
     <script src="~/js/custom.js"></script>
 </section>
-
-

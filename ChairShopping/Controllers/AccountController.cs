@@ -31,7 +31,9 @@ namespace ChairShopping.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginVM login)
 		{
-			if (ModelState.IsValid)
+            await AddRoles();
+            await CreateAdmin();
+            if (ModelState.IsValid)
 			{
 				var user = await _userManager.FindByEmailAsync(login.Email);
 				if (user != null)
@@ -39,7 +41,14 @@ namespace ChairShopping.Controllers
 					var result = await _signInManager.PasswordSignInAsync(user, login.Password, login.RememberMe, false);
 					if (result.Succeeded)
 					{
-						return RedirectToAction("Index", "Home");
+                        if (await _roleManager.RoleExistsAsync("User"))
+                        {
+                            if (!await _userManager.IsInRoleAsync(user, "User") && !await _userManager.IsInRoleAsync(user, "Admin"))
+                            {
+                                await _userManager.AddToRoleAsync(user, "User");
+                            }
+                        }
+                        return RedirectToAction("Index", "Home");
 					}
 					else
 					{
@@ -79,8 +88,7 @@ namespace ChairShopping.Controllers
 
 					};
 					var result = await _userManager.CreateAsync(NewUser, register.Password);
-					var roleResult = await _userManager.AddToRoleAsync(NewUser, "User");
-					if (result.Succeeded && roleResult.Succeeded)
+					if (result.Succeeded)
 					{
 						TempData["UserAdded"] = "User Added Sucessfully";
 						return RedirectToAction("Login", "Account");
@@ -193,6 +201,41 @@ namespace ChairShopping.Controllers
         {
             return View();
         }
-      
+        public async Task AddRoles()
+        {
+            if (_roleManager.Roles.Count() < 1)
+            {
+                var role = new ApplicationRole
+                {
+                    Name = "Admin",
+                };
+                await _roleManager.CreateAsync(role);
+                role = new ApplicationRole
+                {
+                    Name = "User"
+                };
+                await _roleManager.CreateAsync(role);
+            }
+        }
+        public async Task CreateAdmin()
+        {
+            var admin = await _userManager.FindByEmailAsync("Admin@gmail.com");
+            if (admin == null)
+            {
+                var ad = new ApplicationUser
+                {
+                    UserName = "Admin",
+                    Email = "Admin@gmail.com",
+                    EmailConfirmed = true
+                };
+                var result = await _userManager.CreateAsync(ad, "123456");
+                if (result.Succeeded)
+                {
+                    if (await _roleManager.RoleExistsAsync("Admin"))
+                        await _userManager.AddToRoleAsync(ad, "Admin");
+                }
+            }
+        }
+
     }
 }

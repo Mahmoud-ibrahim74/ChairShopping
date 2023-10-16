@@ -30,6 +30,7 @@ namespace ChairShopping.Interfaces
         public Task<Category> EditCategory(Category model, int id);
         public Task<Category> GetCategoryById(int id);
         public Task<Category> DeleteCategory(int id);
+        public Task<CategoriesViewModel> GetCategoryInSinglePage(int currentPage);
         ////////////////////////////////////////////////////////////////////////////////
         public Task<IEnumerable<Product>> GetAllProducts();
         public Task<List<Product>> GetProductsLimitAsync(int limit);
@@ -39,6 +40,7 @@ namespace ChairShopping.Interfaces
         public Task<Product> GetProductById(int id);
         public Task<Product> DeleteProduct(int id);
         public Task<List<Product>> GetProductsByCatgoryIdAsync(int id);
+        public Task<List<Product>> SearchProduct(string search);
         ////////////////////////////////////////////////////////////////////////////////
         public Task<IEnumerable<Order>> GetAllOrders();
         public Task<Order> AddOrder(OrderViewModel model);

@@ -21,21 +21,8 @@ namespace ChairShopping.ComponentsControllers
             _userManager = userManager;
             _cart = cart;
         }
-        public async Task<IViewComponentResult> InvokeAsync(int categ_id,int PageNumber = 1,int PageSize = 8)
+        public async Task<IViewComponentResult> InvokeAsync(int categ_id)
         {
-            //var favs = await _productClasses.GetAllFavourits();
-            //foreach (var item in favs)
-            //{
-            //    ViewBag.favUser = item;
-            //    if (item.IsFavourite==true)
-            //    {
-            //        ViewBag.fav = true;
-            //    }
-            //    else
-            //    {
-            //        ViewBag.fav = false;
-            //    }
-            //}
             if (categ_id == 0)  // this condition to load all categories when page is load
             {
                 return View("Index", await _productClasses.GetProductsLimitAsync(10));  // view 10 products to prevent load on server

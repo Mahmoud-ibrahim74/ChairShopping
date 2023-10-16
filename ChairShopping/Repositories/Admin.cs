@@ -4,9 +4,6 @@ using ChairShopping.Models;
 using ChairShopping.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Collections.Generic;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ChairShopping.Repositories
 {
@@ -655,6 +652,24 @@ namespace ChairShopping.Repositories
             _db.favourites.Remove(favourite);
             await _db.SaveChangesAsync();
             return favourite;
+        }
+
+        public async Task<CategoriesViewModel> GetCategoryInSinglePage(int currentPage)
+        {
+            int maxRows = 10;
+            CategoriesViewModel model = new CategoriesViewModel();
+            model.categories = await _db.categories.OrderBy(c => c.Id).Skip((currentPage - 1 ) * maxRows).Take(maxRows).ToListAsync();
+            double pageCount = (double)((decimal)this._db.categories.Count() / Convert.ToDecimal(maxRows));
+            model.PageCount = (int)Math.Ceiling(pageCount);
+            model.CurrentPageIndex = currentPage;
+            return model;
+        }
+
+        public async Task<List<Product>> SearchProduct(string search)
+        {
+            var products = await _db.products.Include(x => x.Category).OrderByDescending(x => x.Id).Where(x => x.ProductName.ToLower()
+            .Contains(search.ToLower())).ToListAsync();
+            return products;
         }
         ///////////////////////////////////////////////////////////////////////////////
 
