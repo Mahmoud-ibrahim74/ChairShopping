@@ -46,20 +46,20 @@ namespace ChairShopping.Controllers
             ViewBag.Total = Total;
             return View();
         }
-        public async Task<ActionResult<Order>> RemoveOrder(int id)
-        {
-            if (id != 0)
-            {
-                var order = await _repo.GetOrderById(id);
-                if (order != null)
-                {
-                    ViewBag.Deleteorder = order;
-                }
-            }
-            return View();
-        }
+        //public async Task<ActionResult<Order>> RemoveOrder(int id)
+        //{
+        //    if (id != 0)
+        //    {
+        //        var order = await _repo.GetOrderById(id);
+        //        if (order != null)
+        //        {
+        //            ViewBag.Deleteorder = order;
+        //        }
+        //    }
+        //    return View();
+        //}
         [HttpPost]
-        public async Task<ActionResult<Order>> RemoveOrder(int id, OrderViewModel model)
+        public async Task<ActionResult<Order>> RemoveOrder(int id)
         {
             var order =await _repo.GetOrderById(id);
             ViewBag.UserId = order.UserId;

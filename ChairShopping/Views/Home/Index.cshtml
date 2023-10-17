@@ -96,7 +96,7 @@
                     <!-- Icon header -->
                     <div class="wrap-icon-header flex-w flex-r-m">
 
-                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="@user_order.Count">
+                        <div id="CounterCart" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="@user_order.Count">
                             <i class="zmdi zmdi-shopping-cart"></i>
                         </div>
 
@@ -234,7 +234,7 @@
                         {
                             var get_product = _data.GetProductById(items.ProductId).Result;
 
-                            <li class="header-cart-item flex-w flex-t m-b-12">
+                            <li id="RemoveOrder-@items.Id" class="header-cart-item flex-w flex-t m-b-12" data-order-id="@items.Id">
                                 <div class="header-cart-item-img">
                                     <img src="asset/images/@get_product.Image" alt="IMG">
                                 </div>
@@ -243,12 +243,19 @@
                                     <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
                                         @get_product.ProductName
                                     </a>
-
+@*                                     <form asp-action="RemoveOrder" asp-controller="Home" method="post">
+                                        <input type="hidden" name="Id" value="@items.Id" />
+                                        <button class="remove-item-button" type="submit">
+                                            <img src="~/images/icons/icon-close2.png">
+                                        </button>
+                                    </form> *@
+                                    <button class="remove-order" data-order-id="@items.Id"><img src="~/images/icons/icon-close2.png"></button>
                                     <span class="header-cart-item-info">
                                         @items.Quantity x @items.Price$
                                     </span>
                                 </div>
                             </li>
+                            <hr />
                         }
                     }
                     else
@@ -951,6 +958,32 @@
         </div>
     </div>
     <script src="~/js/ProductAjax.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.remove-order').click(function () {
+                var orderId = $(this).data('order-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/RemoveOrder',
+                    data: { id: orderId },
+                    success: function (data) {
+                        if (data.success) {
+                            // Update the cart content or hide the removed order
+                            var liselector = "#RemoveOrder-" + data.Orderid;
+                            console.log(liselector);
+                            $(liselector).remove();
+                            $('#CounterCart').attr('data-notify', data.cartCount);
+                        }
+                    },
+                    error: function (error) {
+                        // Handle errors, if any.
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
