@@ -1,7 +1,4 @@
-﻿using ChairShopping.Data;
-using ChairShopping.Interfaces;
-using ChairShopping.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using ChairShopping.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChairShopping.ComponentsControllers
@@ -10,29 +7,29 @@ namespace ChairShopping.ComponentsControllers
     public class ProductClasses : ViewComponent
     {
         private readonly IAdmin _productClasses;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ICart _cart;
-
-        public ProductClasses(IAdmin productClasses,UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,ICart cart)
+        public ProductClasses(IAdmin productClasses)
         {
-            _signInManager=signInManager;
             this._productClasses = productClasses;
-            _userManager = userManager;
-            _cart = cart;
         }
-        public async Task<IViewComponentResult> InvokeAsync(int categ_id)
+        public async Task<IViewComponentResult> InvokeAsync(int categoryId, string search)
         {
-            if (categ_id == 0)  // this condition to load all categories when page is load
+            if (string.IsNullOrEmpty(search))
             {
-                return View("Index", await _productClasses.GetProductsLimitAsync(10));  // view 10 products to prevent load on server
-
+                if (categoryId == 0)  // this condition to load all categories when page is load
+                {
+                    return View("Index", await _productClasses.GetProductsLimitAsync(8));  // view 10 products to prevent load on server
+                }
+                else
+                {
+                    return View("Index", await _productClasses.GetProductsByCatgoryIdAsync(categoryId));
+                }
             }
             else
             {
-                return View("Index", await _productClasses.GetProductsByCatgoryIdAsync(categ_id));
+                var result = _productClasses.SearchProduct(search);
+                ViewBag.Search = search;
+                return View("Index", await result);
             }
         }
-
     }
 }

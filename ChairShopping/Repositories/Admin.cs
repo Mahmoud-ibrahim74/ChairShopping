@@ -480,7 +480,7 @@ namespace ChairShopping.Repositories
         [Obsolete("Notes This Method Return Only 10 Products")]
         public async Task<List<Product>> GetProductsByCatgoryIdAsync(int id)
         {
-            var _products = await _db.products.Where(x => x.CategoryId == id).Take(10).ToListAsync();
+            var _products = await _db.products.Where(x => x.CategoryId == id).Take(8).ToListAsync();
             if (_products == null)
             {
                 return null;

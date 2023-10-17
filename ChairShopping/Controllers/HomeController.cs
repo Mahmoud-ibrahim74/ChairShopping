@@ -2,6 +2,7 @@
 using ChairShopping.Models;
 using ChairShopping.Repositories;
 using ChairShopping.ViewModel;
+using MailKit.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -31,16 +32,16 @@ namespace ChairShopping.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public async Task<ActionResult<List<Product>>> Search(string search)
-        {
-            var products = await _repo.SearchProduct(search);
-            if (products == null)
-            {
-                return null;
-            }
-            return ViewComponent("ProductClasses", products);
-        }
+        //[HttpPost]
+        //public async Task<ActionResult<List<Product>>> Search(string search)
+        //{
+        //    var products = await _repo.SearchProduct(search);
+        //    if (products == null)
+        //    {
+        //        return null;
+        //    }
+        //    return products;
+        //}
         [HttpPost]
         public async Task<ActionResult<Order>> RemoveOrder(int id)
         {
@@ -48,7 +49,7 @@ namespace ChairShopping.Controllers
             var orders = await _cart.GetCartById(order.UserId);
             ViewBag.UserId = order.UserId;
             await _cart.RemoveFromCart(id);
-            return Json(new { success = true , cartCount = orders.Count()-1 , Orderid = order.Id});
+            return Json(new { success = true , cartDetails = $"{orders.Count() - 1},{order.Id}"});
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -57,10 +58,10 @@ namespace ChairShopping.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         [HttpPost]
-        public IActionResult ProductClasses(string categ_id)
+        public IActionResult ProductClasses(string categ_id,string search)
         {
-            int cast_id = Convert.ToInt32(categ_id);
-            return ViewComponent("ProductClasses",cast_id);
+            int categoryId = Convert.ToInt32(categ_id);
+            return ViewComponent("ProductClasses", new { categoryId, search });
         }
     }
 }

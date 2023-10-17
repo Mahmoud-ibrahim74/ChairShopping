@@ -500,14 +500,14 @@
 
             <div class="flex-w flex-sb-m p-b-52">
                 <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                    <button onclick="GetProductsAsync(0)" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1">
+                    <button onclick="GetProductsAsync(0,'')" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1">
                         All Products
                     </button>
                     @foreach (var items in allCteg)
                     {
                         var getprodCount = _data.GetProductsByCatgoryIdAsync(items.Id).Result.Count();
 
-                        <button id="@items.Id" onclick="GetProductsAsync(@items.Id)" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
+                        <button id="@items.Id" onclick="GetProductsAsync(@items.Id,'')" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
                             @items.CategoryName (@getprodCount)
                         </button>
                     }
@@ -526,18 +526,15 @@
                         Search
                     </div>
                 </div>
-                <form asp-action="Search" asp-controller="Home" method="post">
                     <!-- Search product -->
                     <div class="dis-none panel-search w-full p-t-10 p-b-15">
                         <div class="bor8 dis-flex p-l-15">
-                            <button type="submit" class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+                        <button onclick="GetProductsAsync(0,this)" type="submit" class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
                                 <i class="zmdi zmdi-search"></i>
                             </button>
-
-                            <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search" placeholder="Search">
+                            <input  class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search" placeholder="Search">
                         </div>
                     </div>
-                </form>
 
 
                 <!-- Filter -->
@@ -733,8 +730,8 @@
             <div class="tab-content">
                 <div id="all" data-tab-content class="active">
                     <div id="prod-card" class="row d-flex flex-wrap">
-                        @await Component.InvokeAsync("ProductClasses",0)
-                    </div>
+                        @await Component.InvokeAsync("ProductClasses",new{categ_id = 0,search = ""} )
+                     </div>
                 </div>
             </div>
 
@@ -969,11 +966,11 @@
                     data: { id: orderId },
                     success: function (data) {
                         if (data.success) {
+                            var getCartDetialsArr = data.cartDetails.split(",");
                             // Update the cart content or hide the removed order
-                            var liselector = "#RemoveOrder-" + data.Orderid;
-                            console.log(liselector);
-                            $(liselector).remove();
-                            $('#CounterCart').attr('data-notify', data.cartCount);
+                            var liselector = "#RemoveOrder-" + getCartDetialsArr[1]; // getCartDetialsArr[1] is Order Id in controller
+                             $(liselector).remove();
+                            $('#CounterCart').attr('data-notify', getCartDetialsArr[0]); // getCartDetialsArr[0] count-1 in controller
                         }
                     },
                     error: function (error) {
