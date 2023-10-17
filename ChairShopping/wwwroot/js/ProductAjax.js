@@ -2,8 +2,6 @@
     HideLoader();
 }
 function GetProduct(val,searchVal) {
-    console.log("val from ajax : " + val);
-    console.log("search from ajax : " + searchVal);
     $.ajax({
         url: '/Home/ProductClasses',
         method: "post",
@@ -22,8 +20,10 @@ function GetProduct(val,searchVal) {
     });
 }
 function GetProductsAsync(id, $this) {
-    var val_Search = $this.nextElementSibling.value;
-    console.log("val search" + val_Search);
+    var val_Search = '';
+    if ($this.nextElementSibling.nodeName === "INPUT") {
+        var val_Search = $this.nextElementSibling.value;
+    }
     ShowLoader();
     DeleteProductSection();
     setTimeout(GetProduct, 2000, id, val_Search);
