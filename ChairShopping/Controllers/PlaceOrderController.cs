@@ -101,7 +101,7 @@ namespace ChairShopping.Controllers
                 var emailSubject = "Your Order From FurnitureWebsite";
                 var emailBody = $"you orderd from FurnitureWebsite and we will come soon , follow us";
                 var address = $"{model.Email}";
-                await _emailService.SendEmailAsync(model.Email, address, emailSubject, emailBody);
+                //await _emailService.SendEmailAsync(model.Email, address, emailSubject, emailBody);
                 await _db.placeOrders.AddAsync(orderPlace);
                 await _db.SaveChangesAsync();
 				if (_SignInManager.IsSignedIn(User))
@@ -112,7 +112,8 @@ namespace ChairShopping.Controllers
 						var user = await _UserManager.GetUserAsync(User);
 						if (order.UserId==user.Id)
 						{
-							await _repo.DeleteOrder(order.Id);
+							order.Product.NumberOfStock -= order.Quantity;
+                            await _repo.DeleteOrder(order.Id);
 							await _db.SaveChangesAsync();
 						}
 					}

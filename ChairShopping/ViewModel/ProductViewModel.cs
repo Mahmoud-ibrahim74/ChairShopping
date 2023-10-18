@@ -12,6 +12,7 @@ namespace ChairShopping.ViewModel
         public string ProductDescription { get; set; }
         public IFormFile Image { get; set; }
         public string Color { get; set; }
+        public int NumberOfStock { get; set; }
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
         public List<SelectListItem> categoriesList { get; set; }

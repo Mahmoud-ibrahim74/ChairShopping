@@ -69,9 +69,18 @@ namespace ChairShopping.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> AddToCart(OrderViewModel model)
         {
-            var order =  await _cart.AddToCart(model);
-            ViewBag.UserId = order.UserId;
-            TempData["cart_added"] = "Product Added Sucessfully";
+            var product = await _repo.GetProductById(model.ProductId);
+            if (product.NumberOfStock<model.Quantity)
+            {
+                TempData["cart_notAdded"] = $"We have just {product.NumberOfStock} from this product";
+            }
+            else
+            {
+                var order = await _cart.AddToCart(model);
+                ViewBag.UserId = order.UserId;
+                TempData["cart_added"] = "Product Added Sucessfully";
+                return RedirectToAction("Index", "Home");
+            }
             return RedirectToAction("Index", "Home");
         }
         [HttpGet]

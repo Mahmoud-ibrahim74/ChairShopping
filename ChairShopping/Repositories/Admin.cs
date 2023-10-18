@@ -323,6 +323,7 @@ namespace ChairShopping.Repositories
                 ProductName = model.ProductName,
                 Color = model.Color,
                 Price = model.Price,
+                NumberOfStock = model.NumberOfStock,
                 ProductDescription = model.ProductDescription,
                 ProductCreation = model.ProductCreation,
                 Image = model.Image.FileName,
@@ -356,6 +357,7 @@ namespace ChairShopping.Repositories
             prd.ProductName = model.ProductName;
             prd.Price = model.Price;
             prd.Color = model.Color;
+            prd.NumberOfStock = model.NumberOfStock;
             prd.Image = model.Image.FileName;
             prd.CategoryId = model.CategoryId;
             _db.products.Update(prd);

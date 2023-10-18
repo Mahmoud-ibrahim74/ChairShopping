@@ -30,6 +30,16 @@
             )
         </script>
     }
+    @if (TempData["cart_notAdded"] != null)
+    {
+        <script>
+            Swal.fire(
+                'Error !',
+                '@TempData["cart_notAdded"]',
+                'error',
+            )
+        </script>
+    }
     <!-- Header -->
     <header>
         <!-- Header desktop -->
@@ -100,7 +110,7 @@
                             <i class="zmdi zmdi-shopping-cart"></i>
                         </div>
 
-                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-favourite" data-notify="@user_favourite.Count">
+                        <div id="CounterFav" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-favourite" data-notify="@user_favourite.Count">
                             <i class="zmdi zmdi-favorite-outline"></i>
                         </div>
                     </div>
@@ -240,16 +250,10 @@
                                 </div>
 
                                 <div class="header-cart-item-txt p-t-8">
-                                    <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
+                                    <a asp-action="index" asp-controller="ProductDetails" asp-route-id="@get_product.Id" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
                                         @get_product.ProductName
                                     </a>
-@*                                     <form asp-action="RemoveOrder" asp-controller="Home" method="post">
-                                        <input type="hidden" name="Id" value="@items.Id" />
-                                        <button class="remove-item-button" type="submit">
-                                            <img src="~/images/icons/icon-close2.png">
-                                        </button>
-                                    </form> *@
-                                    <button class="remove-order" data-order-id="@items.Id"><img src="~/images/icons/icon-close2.png"></button>
+                                    <button style="width:100%" class="remove-order" data-order-id="@items.Id"><img src="~/images/icons/icon-close2.png" style="width:10px;"></button>
                                     <span class="header-cart-item-info">
                                         @items.Quantity x @items.Price$
                                     </span>
@@ -266,7 +270,7 @@
                 </ul>
 
                 <div class="w-full">
-                    <div class="header-cart-total w-full p-tb-40">
+                    <div id="TotalPrice" class="header-cart-total w-full p-tb-40">
                         Total: @_cart.TotalOrderPrice(UserManager.GetUserId(User)).Result $;
                     </div>
 
@@ -303,16 +307,47 @@
                         {
                             var get_product = _data.GetProductById(items.ProductId).Result;
 
-                            <li class="header-favourite-item flex-w flex-t m-b-12">
+                            <li id="RemoveFav-@items.Id" class="header-favourite-item flex-w flex-t m-b-12" data-fav-id="@items.Id">
                                 <div class="header-favourite-item-img">
                                     <img src="~/asset/images/@get_product.Image" alt="IMG">
                                 </div>
 
                                 <div class="header-favourite-item-txt p-t-8">
-                                    <a href="#" class="header-favourite-item-name m-b-18 hov-cl1 trans-04">
+                                    <a asp-action="index" asp-controller="ProductDetails" asp-route-id="@get_product.Id" class="header-favourite-item-name m-b-18 hov-cl1 trans-04">
                                         @get_product.ProductName
                                     </a>
                                 </div>
+                                <button style="width:100%" class="remove-fav" data-fav-id="@items.Id"><img src="~/images/icons/icon-close2.png" style="width:10px;"></button>
+
+                                <form asp-action="AddToCart" asp-controller="Cart" method="post">
+                                    <input type="hidden" name="Price" value="@items.Product.Price" />
+                                    <input type="hidden" name="ProductId" value="@items.Product.Id" />
+                                    <input type="hidden" name="Discount" value="0" />
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        <input type="hidden" name="UserId" value="@UserManager.GetUserId(User)" />
+                                    }
+                                    @if (items.Product.NumberOfStock > 0)
+                                    {
+                                        <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-minus"></i>
+                                            </div>
+                                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="Quantity" value="1">
+                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-plus"></i>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+                                            Add to cart
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">Out of stock , it will come soon !!</span>
+
+                                    }
+                                </form>
                             </li>
                         }
                     }
@@ -971,6 +1006,28 @@
                             var liselector = "#RemoveOrder-" + getCartDetialsArr[1]; // getCartDetialsArr[1] is Order Id in controller
                              $(liselector).remove();
                             $('#CounterCart').attr('data-notify', getCartDetialsArr[0]); // getCartDetialsArr[0] count-1 in controller
+                            $('#TotalPrice').text(' TotalPrice ' + getCartDetialsArr[2] + '$');
+                        }
+                    },
+                    error: function (error) {
+                        // Handle errors, if any.
+                        console.log(error);
+                    }
+                });
+            });
+            $('.remove-fav').click(function () {
+                var favId = $(this).data('fav-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/RemoveFavourite',
+                    data: { id: favId },
+                    success: function (data) {
+                        if (data.success) {
+                            var getCartDetialsArr = data.cartDetails.split(",");
+                            // Update the cart content or hide the removed order
+                            var liselector = "#RemoveFav-" + getCartDetialsArr[1]; // getCartDetialsArr[1] is Order Id in controller
+                            $(liselector).remove();
+                            $('#CounterFav').attr('data-notify', getCartDetialsArr[0]); // getCartDetialsArr[0] count-1 in controller
                         }
                     },
                     error: function (error) {

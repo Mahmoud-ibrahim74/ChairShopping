@@ -75,7 +75,20 @@ namespace ChairShopping.Repositories
 			await _db.SaveChangesAsync();
 			return order;
 		}
-		public async Task<decimal> TotalOrderPrice(string Id)
+
+        public async Task<Favourite> RemoveFromFavourite(int id)
+        {
+            var fav = await _repo.GetFavouriteById(id);
+            if (fav == null)
+            {
+                return null;
+            }
+            _db.favourites.Remove(fav);
+            await _db.SaveChangesAsync();
+            return fav;
+        }
+
+        public async Task<decimal> TotalOrderPrice(string Id)
 		{
 			var orders = await GetCartById(Id);
 			foreach (var item in orders)
