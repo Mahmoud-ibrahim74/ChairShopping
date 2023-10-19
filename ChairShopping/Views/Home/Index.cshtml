@@ -34,9 +34,19 @@
     {
         <script>
             Swal.fire(
-                'Error !',
+                'Warning !',
                 '@TempData["cart_notAdded"]',
-                'error',
+                'warning',
+            )
+        </script>
+    }
+    @if (TempData["cart_OrderdJustOne"] != null)
+    {
+        <script>
+            Swal.fire(
+                'Warning  !',
+                '@TempData["cart_OrderdJustOne"]',
+                'warning',
             )
         </script>
     }

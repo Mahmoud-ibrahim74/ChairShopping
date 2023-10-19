@@ -70,16 +70,35 @@ namespace ChairShopping.Controllers
         public async Task<ActionResult<Order>> AddToCart(OrderViewModel model)
         {
             var product = await _repo.GetProductById(model.ProductId);
+            var productUser = await _cart.GetCartById(model.UserId);
             if (product.NumberOfStock<model.Quantity)
             {
-                TempData["cart_notAdded"] = $"We have just {product.NumberOfStock} from this product";
+                TempData["cart_notAdded"] = $"We have just {product.NumberOfStock} from this product , or you orderd it already";
             }
             else
             {
-                var order = await _cart.AddToCart(model);
-                ViewBag.UserId = order.UserId;
-                TempData["cart_added"] = "Product Added Sucessfully";
-                return RedirectToAction("Index", "Home");
+                if (productUser.Count()==0)
+                {
+                    var order = await _cart.AddToCart(model);
+                    ViewBag.UserId = order.UserId;
+                    TempData["cart_added"] = "Product Added Sucessfully";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    foreach (var item in productUser)
+                    {
+                        if (product.ProductName == item.Product.ProductName)
+                        {
+                            TempData["cart_OrderdJustOne"] = "You Orderd it already ,Go to your Cart";
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                        var order = await _cart.AddToCart(model);
+                        ViewBag.UserId = order.UserId;
+                        TempData["cart_added"] = "Product Added Sucessfully";
+                        return RedirectToAction("Index", "Home");
+                }
             }
             return RedirectToAction("Index", "Home");
         }
@@ -115,9 +134,18 @@ namespace ChairShopping.Controllers
         public async Task<ActionResult<Order>> UpdateCart(OrderViewModel model, int id)
         {
             var order = await _repo.GetOrderById(id);
-            ViewBag.UserId = order.UserId;
-            await _repo.EditOrder(model, id);
-            return RedirectToAction("GetCartById", "Cart", new { Id = ViewBag.UserId });
+            if (order.Product.NumberOfStock < model.Quantity)
+            {
+                TempData["cart_notUpdated"] = $"We have just {order.Product.NumberOfStock} from this product , or you orderd it already";
+                ViewBag.UserId = order.UserId;
+                return RedirectToAction("GetCartById", "Cart", new { Id = ViewBag.UserId });
+            }
+            else
+            {
+                ViewBag.UserId = order.UserId;
+                await _repo.EditOrder(model, id);
+                return RedirectToAction("GetCartById", "Cart", new { Id = ViewBag.UserId });
+            }
         }
         [HttpPost]
         public async Task<ActionResult<Favourite>> AddFavourites(FavouritsViewModel model)

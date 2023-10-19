@@ -136,7 +136,7 @@ namespace ChairShopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("categories");
+                    b.ToTable("categories", (string)null);
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Coupon", b =>
@@ -158,7 +158,7 @@ namespace ChairShopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("coupons");
+                    b.ToTable("coupons", (string)null);
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Favourite", b =>
@@ -184,7 +184,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("favourites");
+                    b.ToTable("favourites", (string)null);
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Order", b =>
@@ -222,7 +222,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("orders");
+                    b.ToTable("orders", (string)null);
                 });
 
             modelBuilder.Entity("ChairShopping.Models.PlaceOrder", b =>
@@ -258,7 +258,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("CouponId");
 
-                    b.ToTable("placeOrders");
+                    b.ToTable("placeOrders", (string)null);
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Product", b =>
@@ -297,7 +297,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("products");
+                    b.ToTable("products", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
