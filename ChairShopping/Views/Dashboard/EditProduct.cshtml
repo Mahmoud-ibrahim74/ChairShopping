@@ -52,6 +52,10 @@
         <input type="text" class="form-control" asp-for="Price" value="@ViewBag.UpdateProduct.Price">
     </div>
     <div class="form-group">
+        <label for="exampleInputEmail1">Product Stock</label>
+        <input type="text" class="form-control" asp-for="NumberOfStock" value="@ViewBag.UpdateProduct.NumberOfStock">
+    </div>
+    <div class="form-group">
         <label for="exampleInputEmail1">Images</label>
 @*         i need script to remove the old image and put the new image in website
  *@        <img src="~/asset/images/@ViewBag.UpdateProduct.Image" width="200px" height="auto" />

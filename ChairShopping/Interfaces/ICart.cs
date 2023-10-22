@@ -10,6 +10,8 @@ namespace ChairShopping.Interfaces
         public Task<List<Order>> GetCartById(string id);
 	    public Task<Order> AddToCart(OrderViewModel model);
         public Task<Order> RemoveFromCart(int id);
+        public Task<Favourite> RemoveFromFavourite(int id);
+
         public Task<Order> UpdateCart(int id,OrderViewModel model);
         public Task<decimal> TotalOrderPrice(string Id);
         public Task<Favourite> AddToFavourite(FavouritsViewModel model);

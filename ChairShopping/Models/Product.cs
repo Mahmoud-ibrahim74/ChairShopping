@@ -11,6 +11,7 @@ namespace ChairShopping.Models
         public string ProductDescription { get; set; }
         public string Image { get; set; }
         public string Color { get; set; }
+        public int NumberOfStock { get; set; }
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
