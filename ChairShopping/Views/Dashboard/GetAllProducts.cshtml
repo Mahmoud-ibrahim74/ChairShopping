@@ -55,6 +55,7 @@
                     <th>Price</th>
                     <th>CategoryName</th>
                     <th>Image</th>
+                    <th>Number Of Stock</th>
                 </tr>
             </thead>
             <tbody class="font-weight-bold">
@@ -68,6 +69,7 @@
                         <td>@item.Price</td>
                         <td>@item.Category.CategoryName</td>
                         <td><img src="~/asset/images/@item.Image" width="200px" height="auto" /></td>
+                        <td>@item.NumberOfStock</td>
                         <td><a asp-controller="dashboard" asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-primary">Update</a></td>
                         <td><a asp-controller="dashboard" asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-danger">Delete</a></td>
                         <td><a asp-controller="dashboard" asp-action="GetProductDetails" asp-route-id="@item.Id" class="btn btn-success">Details</a></td>

@@ -4,6 +4,7 @@ using ChairShopping.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChairShopping.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231018120604_AddColumnNumberOfStock")]
+    partial class AddColumnNumberOfStock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,28 +139,7 @@ namespace ChairShopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("categories", (string)null);
-                });
-
-            modelBuilder.Entity("ChairShopping.Models.ContactUs", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContactUs");
+                    b.ToTable("categories");
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Coupon", b =>
@@ -179,7 +161,7 @@ namespace ChairShopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("coupons", (string)null);
+                    b.ToTable("coupons");
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Favourite", b =>
@@ -205,7 +187,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("favourites", (string)null);
+                    b.ToTable("favourites");
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Order", b =>
@@ -243,7 +225,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("orders", (string)null);
+                    b.ToTable("orders");
                 });
 
             modelBuilder.Entity("ChairShopping.Models.PlaceOrder", b =>
@@ -279,7 +261,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("CouponId");
 
-                    b.ToTable("placeOrders", (string)null);
+                    b.ToTable("placeOrders");
                 });
 
             modelBuilder.Entity("ChairShopping.Models.Product", b =>
@@ -318,7 +300,7 @@ namespace ChairShopping.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("products", (string)null);
+                    b.ToTable("products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
