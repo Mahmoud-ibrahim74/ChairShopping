@@ -70,5 +70,45 @@
             )
         </script>
     }
+    @if (TempData["cart_added"] != null)
+    {
+        <script>
+            Swal.fire(
+                'Congratulations !',
+                '@TempData["cart_added"]',
+                'success',
+            )
+        </script>
+    }
+    @if (TempData["cart_notAdded"] != null)
+    {
+        <script>
+            Swal.fire(
+                'Warning !',
+                '@TempData["cart_notAdded"]',
+                'warning',
+            )
+        </script>
+    }
+    @if (TempData["cart_OrderdJustOne"] != null)
+    {
+        <script>
+            Swal.fire(
+                'Warning  !',
+                '@TempData["cart_OrderdJustOne"]',
+                'warning',
+            )
+        </script>
+    }
+    @if (TempData["cart_notUpdated"] != null)
+    {
+        <script>
+            Swal.fire(
+                'Warning !',
+                '@TempData["cart_notUpdated"]',
+                'warning',
+            )
+        </script>
+    }
 }
 

@@ -28,7 +28,7 @@
 
                     <!-- Logo desktop -->
                     <a asp-action="index" asp-controller="Home" class="logo">
-                        <img src="~/images/icons/logo-01.png" alt="IMG-LOGO">
+                        <img src="~/asset/images/logo-01.png" alt="IMG-LOGO">
                     </a>
 
                     <!-- Menu desktop -->
@@ -101,7 +101,7 @@
         <div class="wrap-header-mobile">
             <!-- Logo moblie -->
             <a asp-action="index" asp-controller="Home" class="logo">
-                <img src="~/images/icons/logo-01.png" alt="IMG-LOGO">
+                <img src="~/images/logo-01.png" alt="IMG-LOGO">
             </a>
 
             <!-- Icon header -->
@@ -187,7 +187,7 @@
         <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
             <div class="container-search-header">
                 <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-                    <img src="~/images/icons/icon-close2.png" alt="CLOSE">
+                    <img src="~/images/icon-close2.png" alt="CLOSE">
                 </button>
 
                 <form class="wrap-search-header flex-w p-l-15">
@@ -225,7 +225,7 @@
 
                             <li id="RemoveOrder-@items.Id" class="header-cart-item flex-w flex-t m-b-12" data-order-id="@items.Id">
                                 <div class="header-cart-item-img">
-                                    <img src="asset/images/@get_product.Image" alt="IMG">
+                                    <img src="~/asset/images/@get_product.Image" alt="IMG">
                                 </div>
 
                                 <div class="header-cart-item-txt p-t-8">
@@ -255,7 +255,7 @@
                 </ul>
 
                 <div class="w-full">
-                    <div class="header-cart-total w-full p-tb-40">
+                    <div id="TotalPrice" class="header-cart-total w-full p-tb-40">
                         Total: @_cart.TotalOrderPrice(UserManager.GetUserId(User)).Result $;
                     </div>
 
@@ -322,7 +322,55 @@
         </main>
     </div>
     <script src="~/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.remove-order').click(function () {
+                var orderId = $(this).data('order-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/RemoveOrder',
+                    data: { id: orderId },
+                    success: function (data) {
+                        if (data.success) {
+                            var getCartDetialsArr = data.cartDetails.split(",");
 
+                            // Update the cart content or hide the removed order
+                            var liselector = "#RemoveOrder-" + getCartDetialsArr[1]; // getCartDetialsArr[1] is Order Id in controller
+                            $(liselector).remove();
+                            $('#CounterCart').attr('data-notify', getCartDetialsArr[0]); // getCartDetialsArr[0] count-1 in controller
+                            $('#TotalPrice').text(' Total :  ' + getCartDetialsArr[2] + '$');
+                        }
+                    },
+                    error: function (error) {
+                        // Handle errors, if any.
+                        console.log(error);
+                    }
+                });
+            });
+            $('.remove-fav').click(function () {
+                var favId = $(this).data('fav-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/RemoveFavourite',
+                    data: { id: favId },
+                    success: function (data) {
+                        if (data.success) {
+                            var getCartDetialsArr = data.cartDetails.split(",");
+                            // Update the cart content or hide the removed order
+                            var liselector = "#RemoveFav-" + getCartDetialsArr[1]; // getCartDetialsArr[1] is Order Id in controller
+                            $(liselector).remove();
+                            $('#CounterFav').attr('data-notify', getCartDetialsArr[0]); // getCartDetialsArr[0] count-1 in controller
+                        }
+                    },
+                    error: function (error) {
+                        // Handle errors, if any.
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 
