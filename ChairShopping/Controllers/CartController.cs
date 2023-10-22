@@ -1,6 +1,5 @@
 ﻿using ChairShopping.Data;
 using ChairShopping.Interfaces;
-using ChairShopping.Migrations;
 using ChairShopping.Models;
 using ChairShopping.ViewModel;
 using Microsoft.AspNetCore.Identity;

@@ -64,5 +64,7 @@ namespace ChairShopping.Interfaces
         public Task<Favourite> AddFavourite(FavouritsViewModel model);
         public Task<Favourite> EditFavourite(FavouritsViewModel model, int id);
         public Task<Favourite> DeleteFavourite(int id);
-    }
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        public Task<ContactUs> AddContactUs(ContactUs contact);
+	}
 }

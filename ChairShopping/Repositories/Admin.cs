@@ -671,7 +671,22 @@ namespace ChairShopping.Repositories
             .Contains(search.ToLower())).ToListAsync();
             return products;
         }
-        ///////////////////////////////////////////////////////////////////////////////
 
-    }
+		public async Task<ContactUs> AddContactUs(ContactUs model)
+		{
+			if (model == null)
+			{
+				return null;
+			}
+			var contact = new ContactUs
+			{
+				email = model.email,
+                message = model.message
+			};
+			await _db.ContactUs.AddAsync(contact);
+			await _db.SaveChangesAsync();
+			return contact;
+		}
+
+	}
 }
