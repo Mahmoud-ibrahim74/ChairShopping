@@ -1,8 +1,5 @@
 ﻿using ChairShopping.Interfaces;
 using ChairShopping.Models;
-using ChairShopping.Repositories;
-using ChairShopping.ViewModel;
-using MailKit.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
