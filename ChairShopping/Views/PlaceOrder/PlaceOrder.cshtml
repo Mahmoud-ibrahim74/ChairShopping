@@ -65,7 +65,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						@if (ViewBag.c == true)
+						@if (ViewBag.c == true || ViewBag.c == null)
 						{
 							<div class="row mb-5">
 								<div class="col-md-12">
@@ -87,7 +87,7 @@
 								</div>
 							</div>
 						}
-						@if (ViewBag.c == false || ViewBag.c == null)
+						@if (ViewBag.c == false)
 						{
 								<div class="alert alert-danger alert-dismissible fade show" role="alert">
 									<strong>No Coupon Today!!!!!</strong>

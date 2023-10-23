@@ -57,7 +57,7 @@ namespace ChairShopping.Controllers
 			}
 			// fake solution ????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			var Allcoupons = await _repo.GetAllCoupons();
-			if (Allcoupons.Count()==0)
+			if (Allcoupons.Count()==0 || Allcoupons.Count()==1)
 			{
 				ViewBag.c = false;
 			}
@@ -71,7 +71,7 @@ namespace ChairShopping.Controllers
         public async Task<IActionResult> PlaceOrder(PlaceOrderViewModel model)
         {
 			var coupons = await _repo.GetAllCoupons();
-			if (coupons.Count()!=0)
+			if (coupons.Count()!=0 && coupons.Count()!=1)
 			{
 				foreach (var coupon in coupons)
 				{
@@ -79,13 +79,14 @@ namespace ChairShopping.Controllers
 					{
 						model.CouponId = coupon.Id;
 					}
-					else
-					{
-						ModelState.AddModelError("", "Coupon Expired or Invalid");
-					}
 				}
 			}
-			if (ModelState.IsValid)
+            if (model.CouponId == null)
+            {
+                //make couponId = default coupon
+                model.CouponId = 5;
+            }
+            if (ModelState.IsValid)
             {
 				var orderPlace = new PlaceOrder
                 {
