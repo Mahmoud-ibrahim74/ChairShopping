@@ -7,9 +7,12 @@ namespace ChairShopping.ComponentsControllers
     public class ProductClasses : ViewComponent
     {
         private readonly IAdmin _productClasses;
-        public ProductClasses(IAdmin productClasses)
+        private readonly IProductFilter _filter;
+
+        public ProductClasses(IAdmin productClasses , IProductFilter filter)
         {
             this._productClasses = productClasses;
+            _filter = filter;
         }
         public async Task<IViewComponentResult> InvokeAsync(int categoryId, string search)
         {
